@@ -8,27 +8,60 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <script src="https://kit.fontawesome.com/6a870feefe.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
         <a href="../index.html">
-            <img src="../images/logo.png" alt="beyond the bloons home">
+            <img src="../images/logo.png" class="logo" alt="beyond the bloons home">
         </a>
         <nav>
-            <ul>
+            <ul class="menu">
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="blogs.html">Blog</a></li>
             </ul>
+            <button class="hamburger">
+                <i class="fa-solid fa-bars"></i>
+                <i class="fa-solid fa-x"></i>
+            </button>
         </nav>
     </header>
     <main>
-        <div>
+        <section>
             <h1>Contact</h1>
             <i class="fa-regular fa-address-card"></i>
-        </div>
+        </section>
+        <section>
+            <h2>Send Us a Message</h2>
+            <form action="">
+                <div class="form-input">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name">
+                    <p class="form-error" id="name-error">Name needs to more than 5 characters</p>
+                </div>
+                <div class="form-input">
+                    <label for="email-addresse">Email address:</label>
+                    <input type="text" id="email-addresse">
+                    <p class="form-error" id="email-error">Email not valid</p>
+                </div>
+                <div class="form-input">
+                    <label for="subject">Subject:</label>
+                    <input type="text" id="subject">
+                    <p class="form-error" id="subject-error">Subject needs to be more than 15 characters</p>
+                </div>
+                <div class="form-input">
+                    <label for="message">Message:</label>
+                    <textarea name="message" id="message" cols="30" rows="10"></textarea>
+                    <p class="form-error" id="message-error">Message needs to be more than 25 characters</p>
+                </div>
+                <button class="cta">Submit</button>
+                <div class="confirmation">
+                    <p>Thanks for sending us a message, we will respond as quickly as possible</p>
+                </div>
+            </form>
+        </section>
     </main>
     <footer>
         <div>
@@ -37,26 +70,26 @@
                 endorsed by, or sponsored by NinjaKiwi</p>
         </div>
         <div>
-            <div>
+            <div class="socials">
                 <div class="logo"></div>
                 <h2>Beyond the Bloons</h2>
             </div>
-            <div>
+            <div class="socials">
                 <i class="fa-brands fa-youtube"></i>
                 <i class="fa-brands fa-discord"></i>
                 <i class="fa-brands fa-instagram"></i>
                 <i class="fa-brands fa-x-twitter"></i>
             </div>
         </div>
-        <div>
+        <div class="newsletter">
             <h2>Subscibe to our newsletter</h2>
-            <div>
-                <label for="email">Email address</label>
+            <div class="form-input">
+                <label for="email">Email address:</label>
                 <input type="text" id="email">
             </div>
-            <button></button>
+            <button class="cta">Submit</button>
         </div>
     </footer>
-    <script src="js/script.js"></script>
+    <script src="/js/script.js" type="module"></script>
 </body>
 </html>
