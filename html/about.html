@@ -8,27 +8,59 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <script src="https://kit.fontawesome.com/6a870feefe.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
         <a href="../index.html">
-            <img src="../images/logo.png" alt="beyond the bloons home">
+            <img src="../images/logo.png" class="logo" alt="beyond the bloons home">
         </a>
         <nav>
-            <ul>
+            <ul class="menu">
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="blogs.html">Blog</a></li>
             </ul>
+            <button class="hamburger">
+                <i class="fa-solid fa-bars"></i>
+                <i class="fa-solid fa-x"></i>
+            </button>
         </nav>
     </header>
     <main>
-        <div>
+        <section>
             <h1>About us</h1>
             <i class="fa-regular fa-address-card"></i>
-        </div>
+        </section>
+        <section>
+            <p>Welcome to Beyond the Bloons, the premier destination for Bloons Tower Defense 6 enthusiasts and strategists. We're dedicated to helping players of all levels master the art of Bloons popping and tower defense.</p>
+            <h2>Our Mission</h2>
+            <p>At Beyond the Bloons, our mission is simple: to provide you with the most comprehensive and up-to-date resource for all things BTD6. We're passionate about the game and equally passionate about sharing our knowledge and insights with the Bloons community.</p>
+            <h2>What we offer</h2>
+            <ul>
+                <li>
+                    <strong>In-Depth Guides</strong>
+                    <p>From beginner tips to advanced strategies, we offer detailed guides that will help you navigate the world of Bloons Tower Defense 6. Whether you're looking to conquer a challenging map or optimize your tower placement, we've got you covered.</p>
+                </li>
+                <li>
+                    <strong>Hero Spotlights</strong>
+                    <p>Explore our in-depth hero spotlights, where we break down the strengths, weaknesses, and unique abilities of each hero in the game.</p>
+                </li>
+                <li>
+                    <strong>Tower Reviews</strong>
+                    <p>Discover the best tower choices for various maps and situations. We provide comprehensive reviews of different tower types and upgrade paths.</p>
+                </li>
+                <li>
+                    <strong>News and Updates</strong>
+                    <p>Stay informed with the latest news, patch notes, and events in the BTD6 world. We keep you up-to-date with everything happening in the game.</p>
+                </li>
+            </ul>
+            <h2>Join us in the battle</h2>
+            <p>Whether you're here to refine your strategies, connect with other Bloons enthusiasts, or simply have fun, we invite you to be part of our Bloons adventure. Together, we'll pop, blast, and conquer the Bloons menace.</p>
+            <p>Thanks for visiting Beyond the bloons. Dive into our blog, embrace the challenge, and pop those Bloons like a pro!</p>
+            <a href="blogs.html">Read Blog</a>
+        </section>
     </main>
     <footer>
         <div>
@@ -37,26 +69,26 @@
                 endorsed by, or sponsored by NinjaKiwi</p>
         </div>
         <div>
-            <div>
+            <div class="socials">
                 <div class="logo"></div>
                 <h2>Beyond the Bloons</h2>
             </div>
-            <div>
+            <div class="socials">
                 <i class="fa-brands fa-youtube"></i>
                 <i class="fa-brands fa-discord"></i>
                 <i class="fa-brands fa-instagram"></i>
                 <i class="fa-brands fa-x-twitter"></i>
             </div>
         </div>
-        <div>
+        <div class="newsletter">
             <h2>Subscibe to our newsletter</h2>
-            <div>
-                <label for="email">Email address</label>
+            <div class="form-input">
+                <label for="email">Email address:</label>
                 <input type="text" id="email">
             </div>
-            <button></button>
+            <button class="cta">Submit</button>
         </div>
     </footer>
-    <script src="js/script.js"></script>
+    <script src="/js/script.js" type="module"></script>
 </body>
 </html>
