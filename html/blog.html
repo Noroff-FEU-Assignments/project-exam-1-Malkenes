@@ -3,28 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <title>Beyond the Bloons | </title>
+    <meta id="description" name="description" content="">
+    <title id="page-title"></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <script src="https://kit.fontawesome.com/6a870feefe.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
         <a href="../index.html">
-            <img src="../images/logo.png" alt="beyond the bloons home">
+            <img src="../images/logo.png" class="logo" alt="beyond the bloons home">
         </a>
         <nav>
-            <ul>
+            <ul class="menu">
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="blogs.html">Blog</a></li>
             </ul>
+            <button class="hamburger">
+                <i class="fa-solid fa-bars"></i>
+                <i class="fa-solid fa-x"></i>
+            </button>
         </nav>
     </header>
-    <main>
+    <main class="blog">
     </main>
     <footer>
         <div>
@@ -33,26 +37,26 @@
                 endorsed by, or sponsored by NinjaKiwi</p>
         </div>
         <div>
-            <div>
+            <div class="socials">
                 <div class="logo"></div>
                 <h2>Beyond the Bloons</h2>
             </div>
-            <div>
+            <div class="socials">
                 <i class="fa-brands fa-youtube"></i>
                 <i class="fa-brands fa-discord"></i>
                 <i class="fa-brands fa-instagram"></i>
                 <i class="fa-brands fa-x-twitter"></i>
             </div>
         </div>
-        <div>
+        <div class="newsletter">
             <h2>Subscibe to our newsletter</h2>
-            <div>
-                <label for="email">Email address</label>
+            <div class="form-input">
+                <label for="email">Email address:</label>
                 <input type="text" id="email">
             </div>
-            <button></button>
+            <button class="cta">Submit</button>
         </div>
     </footer>
-    <script src="js/script.js"></script>
+    <script src="/js/script.js" type="module"></script>
 </body>
 </html>

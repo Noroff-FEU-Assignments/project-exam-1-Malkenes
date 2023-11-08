@@ -14,32 +14,38 @@
 <body>
     <header>
         <a href="index.html">
-            <img src="images/logo.png" alt="beyond the bloons home">
+            <img src="images/logo.png" class="logo" alt="beyond the bloons home">
         </a>
         <nav>
-            <ul>
+            <ul class="menu">
                 <li><a href="html/contact.html">Contact</a></li>
                 <li><a href="html/about.html">About</a></li>
                 <li><a href="html/blogs.html">Blog</a></li>
             </ul>
+            <button class="hamburger">
+                <i class="fa-solid fa-bars"></i>
+                <i class="fa-solid fa-x"></i>
+            </button>
         </nav>
     </header>
     <main>
-        <section>
-            <h1>Where <span>Bloons</span> Meet Their Match</h1>
-            <div>
+        <section class="hero">
+            <h1 class="hero-text">Where <span>Bloons</span> Meet Their Match</h1>
+            <div class="carousel">
                 <h2>New Posts</h2>
                 <div class="carousel-wrapper"></div>
-                <button class="previous"></button>
-                <button class="next"></button>
+                <button class="previous"><i class="fas fa-arrow-left"></i></button>
+                <button class="next"><i class="fas fa-arrow-right"></i></button>
             </div>
         </section>
-        <section>
+        <section class="introduction">
             <div>
                 <h2>Welcome to Beyond the Bloons</h2>
                 <p>your ultimate Bloons Tower Defense 6 resource! Unleash your inner strategist and join us in the battle against the Bloons. Whether you're a newcomer or a seasoned player, we've got the tips, strategies, and insights you need to conquer the game. Dive in and pop those Bloons like a pro!</p>
             </div>
-            <button></button>
+            <a href="html/about.html">
+                <button class="cta">Learn More <i class="fas fa-arrow-right"></i></button>
+            </a>
         </section>
         <section>
             <h2>Favorite Heroes</h2>
@@ -47,16 +53,16 @@
         </section>
         <section>
             <h2>Explore</h2>
-            <div>
-                <div>
-                    <div>Reviews</div>
-                    <div>Community</div>
-                    <div>Analysis</div>
-                    <div>Guides</div>
-                    <div>Spotlight</div>
-                    <div>News</div>
-                    <div>Events</div>
-                    <div>Misc</div>
+            <div class="explore">
+                <div class="categories">
+                    <div class="reviews">Reviews</div>
+                    <div class="community">Community</div>
+                    <div class="analysis">Analysis</div>
+                    <div class="guides">Guides</div>
+                    <div class="spotlight">Spotlight</div>
+                    <div class="news">News</div>
+                    <div class="events">Events</div>
+                    <div class="misc">Misc</div>
                 </div>
                 <div class="preview"></div>
             </div>
@@ -69,26 +75,26 @@
                 endorsed by, or sponsored by NinjaKiwi</p>
         </div>
         <div>
-            <div>
+            <div class="socials">
                 <div class="logo"></div>
                 <h2>Beyond the Bloons</h2>
             </div>
-            <div>
+            <div class="socials">
                 <i class="fa-brands fa-youtube"></i>
                 <i class="fa-brands fa-discord"></i>
                 <i class="fa-brands fa-instagram"></i>
                 <i class="fa-brands fa-x-twitter"></i>
             </div>
         </div>
-        <div>
+        <div class="newsletter">
             <h2>Subscibe to our newsletter</h2>
-            <div>
-                <label for="email">Email address</label>
+            <div class="form-input">
+                <label for="email">Email address:</label>
                 <input type="text" id="email">
             </div>
-            <button></button>
+            <button class="cta">Submit</button>
         </div>
     </footer>
-    <script src="js/script.js"></script>
+    <script src="js/script.js" type="module"></script>
 </body>
 </html>
