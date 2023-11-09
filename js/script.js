@@ -91,6 +91,18 @@ if (carousel) {
     createCarousel(newPosts);
 }
 
+const favoriteHeroes = document.querySelector(".favorite-heroes");
+if (favoriteHeroes) {
+    const data = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?categories=4&_embed");
+    for (let i = 1 ; i < 6 ; i++) {
+        const image = document.querySelector(".bg-image_"+i);
+        image.style.backgroundImage = `url(${data[i-1]._embedded["wp:featuredmedia"]["0"].source_url})`;
+        const link = document.querySelector(".link_" + i);
+        link.href =`/html/blog.html?id=${data[i-1].id}&title=${data[i-1].title.rendered}`
+    }
+}
+
+
 const preview = document.querySelector(".preview");
 if (preview) {
     const post = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?categories=3&per_page=1&_embed");
