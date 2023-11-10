@@ -38,7 +38,6 @@ let createCarousel = (data) => {
         } else {
             j = 6
         }
-        console.log(j);
         carousel.innerHTML = ""
         for (let i = j ; i < j+3 ; i++) {
             if (i%3 === 0) {
@@ -54,7 +53,6 @@ let createCarousel = (data) => {
         } else {
             j = 0;
         }
-        console.log(j)
         carousel.innerHTML = ""
         for (let i = j ; i < j+3 ; i++) {
             if (i%3 === 0) {
@@ -74,7 +72,6 @@ let createCarouselItem = (data , vertical=false) => {
         container.classList.add("horizontal");
     }
     container.classList.add("blog-post");
-    container.classList.add(data.slug);
     container.innerHTML =`
     <div class="bg-image" style="background-image: url(${imgUrl})"></div>
     <div class="description">
@@ -84,10 +81,35 @@ let createCarouselItem = (data , vertical=false) => {
     </div>`;
     return container;
 }
+let createPreviewItem = (data) => {
+    const imgUrl = data._embedded["wp:featuredmedia"]["0"].source_url;
+    const container = document.createElement("div");
+    container.classList.add("blog-post");
+    container.classList.add(data.slug);
+    container.innerHTML =`
+    <div class="bg-image" style="background-image: url(${imgUrl})"></div>
+    <div class="description">
+        <div class="title"><h3>${data.title.rendered}</h3></div>
+        ${data.excerpt.rendered}
+    </div>`;
+    return container;
+}
+let createListItem = (data) => {
+    const imgUrl = data._embedded["wp:featuredmedia"]["0"].source_url;
+    const container = document.createElement("a");
+    container.href = `/html/blog.html?id=${data.id}&title=${data.title.rendered}`
+    container.classList.add("blog-post");
+    container.innerHTML =`
+    <div class="bg-image" style="background-image: url(${imgUrl})"></div>
+    <div class="description">
+        <div class="title"><h3>${data.title.rendered}</h3></div>
+        ${data.excerpt.rendered}
+    </div>`;
+    return container;
+}
 const carousel = document.querySelector(".carousel-wrapper");
 if (carousel) {
     const newPosts = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?_embed");
-    console.log(newPosts)
     createCarousel(newPosts);
 }
 
@@ -106,14 +128,13 @@ if (favoriteHeroes) {
 const preview = document.querySelector(".preview");
 if (preview) {
     const post = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?categories=3&per_page=1&_embed");
-    console.log(post);
-    preview.append(createCarouselItem(post[0]));
+    preview.append(createPreviewItem(post[0]));
     const post2 = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?categories=4&per_page=1&_embed");
-    preview.append(createCarouselItem(post2[0]));
+    preview.append(createPreviewItem(post2[0]));
     const post3 = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?categories=5&per_page=1&_embed");
-    preview.append(createCarouselItem(post3[0]));
+    preview.append(createPreviewItem(post3[0]));
     const post4 = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?categories=6&per_page=1&_embed");
-    preview.append(createCarouselItem(post4[0]));
+    preview.append(createPreviewItem(post4[0]));
     const article = document.querySelector(".unleashing-mayhem-with-the-dartling-gunner");
     const article2 = document.querySelector(".hero-spotlight-benjamin");
     const article3 = document.querySelector(".how-to-beat-tree-stump");
@@ -134,9 +155,7 @@ if (preview) {
         }
     }
     const categories = document.querySelector(".categories");
-    console.log(categories.children[0]);
     for (let i = 0 ; i < categories.children.length ; i++) {
-        console.log(categories.children[i]);
         categories.children[i].addEventListener("mouseover", setActiveArticle);
         categories.children[i].addEventListener("mouseout", setActiveArticle);
 
@@ -157,10 +176,22 @@ async function displayBlog() {
     blogPage.innerHTML = `
     <section class="blog-header">
         <h1>${blogData.title.rendered}</h1>
-        <img class="blog-image" src="${blogData._embedded["wp:featuredmedia"]["0"].source_url}"></img>
+        <img class="blog-image" id="modalBtn" src="${blogData._embedded["wp:featuredmedia"]["0"].source_url}"></img>
     </section>
-    <section><div class="blog-content">${blogData.content.rendered}<div></section>`;
-
+    <section><div class="blog-content">${blogData.content.rendered}<div></section>
+    <div class="modal" id="imageModal">
+        <img class="modal-image" src="${blogData._embedded["wp:featuredmedia"]["0"].source_url}"></img>
+    </div>`;
+    const modal = document.querySelector("#imageModal");
+    const btn = document.querySelector("#modalBtn");
+    btn.addEventListener("click" ,function(){
+    modal.style.display = "block";
+    })
+    window.onclick = function(event) {
+        if(event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
 }
 
 
@@ -168,11 +199,17 @@ if (blogPage) {
     displayBlog();
 }
 
+
 async function displayBlogList(page) {
     const posts = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?"+ page + "&_embed");
     posts.forEach(el => {
-        blogList.append(createCarouselItem(el));
+        blogList.append(createListItem(el));
     })
+    for (let i = 0 ; i < blogList.children.length ; i++) {
+        if ( i%2 === 0) {
+            blogList.children[i].classList.add("background");
+        }
+    }
 }
 let reload = (e) => {
     const id = getCategoryId(e.target.classList[0]);
@@ -191,13 +228,9 @@ if (blogList) {
         displayBlogList("page=" + page);
     })
     const filter = document.querySelector(".filter");
-    console.log(filter.children[0]);
     for (let i = 0 ; i < filter.children.length ; i++) {
-        console.log(filter.children[i]);
         filter.children[i].addEventListener("click", reload);
-
     }
-
 }
 
 
@@ -219,70 +252,102 @@ let getCategoryId = (category) => {
         default:
             break;
     }
-    console.log(id);
     return id;
 }
-
-const name = document.querySelector("#name");
-const nameError = document.querySelector("#name-error");
-name.addEventListener("focusout", function() {
-    if(!stringValidation(name.value,5) && name.value.trim().length > 0) {
-        displayFormError(nameError);
-    } else {
+const contactForm = document.querySelector("#contact-form");
+if (contactForm) {
+    const name = document.querySelector("#name");
+    const nameError = document.querySelector("#name-error");
+    name.addEventListener("focusout", function() {
+        if(!stringValidation(name.value,5) && name.value.trim().length > 0) {
+            displayFormError(nameError);
+        } else {
+            hideFormError(nameError);
+        }
+    })
+    name.addEventListener("focusin", function() {
         hideFormError(nameError);
-    }
-})
-name.addEventListener("focusin", function() {
-    hideFormError(nameError);
-});
-const emailAddresse = document.querySelector("#email-addresse");
-const emailAddresseError = document.querySelector("#email-adresse-error")
-emailAddresse.addEventListener("focusout", function() {
-    if(!emailValidation(emailAddresse.value) && emailAddresse.value.trim().length > 0) {
-        displayFormError(emailAddresseError);
-    } else {
+    });
+    const emailAddresse = document.querySelector("#email-addresse");
+    const emailAddresseError = document.querySelector("#email-adresse-error")
+    emailAddresse.addEventListener("focusout", function() {
+        if(!emailValidation(emailAddresse.value) && emailAddresse.value.trim().length > 0) {
+            displayFormError(emailAddresseError);
+        } else {
+            hideFormError(emailAddresseError);
+        }
+    })
+    emailAddresse.addEventListener("focusin", function() {
         hideFormError(emailAddresseError);
-    }
-})
-emailAddresse.addEventListener("focusin", function() {
-    hideFormError(emailAddresseError);
-})
-const subject = document.querySelector("#subject");
-const subjectError = document.querySelector("#subject-error");
-subject.addEventListener("focusout", function() {
-    if(!stringValidation(subject.value,15) && subject.value.trim().length > 0) {
-        displayFormError(subjectError);
-    } else {
+    })
+    const subject = document.querySelector("#subject");
+    const subjectError = document.querySelector("#subject-error");
+    subject.addEventListener("focusout", function() {
+        if(!stringValidation(subject.value,15) && subject.value.trim().length > 0) {
+            displayFormError(subjectError);
+        } else {
+            hideFormError(subjectError);
+        }
+    })
+    subject.addEventListener("focusin", function() {
         hideFormError(subjectError);
-    }
-})
-subject.addEventListener("focusin", function() {
-    hideFormError(subjectError);
-})
+    })
 
-const message = document.querySelector("#message");
-const messageError = document.querySelector("#message-error");
+    const message = document.querySelector("#message");
+    const messageError = document.querySelector("#message-error");
 
-message.addEventListener("focusout", function() {
-    if(!stringValidation(message.value,25) && message.value.trim().length > 0) {
-        displayFormError(messageError);
-    } else {
+    message.addEventListener("focusout", function() {
+        if(!stringValidation(message.value,25) && message.value.trim().length > 0) {
+            displayFormError(messageError);
+        } else {
+            hideFormError(messageError);
+        }
+    })
+    message.addEventListener("focusin", function() {
         hideFormError(messageError);
-    }
-})
-message.addEventListener("focusin", function() {
-    hideFormError(messageError);
-})
-message.addEventListener("input", function() {
-    const wordCount = document.querySelector("#words-written");
-    const checkMark = document.querySelector("#check-mark");
-    wordCount.textContent = message.value.trim().length;
-    if (stringValidation(message.value,25)) {
-        checkMark.style.display = "initial";
-    } else {
-        checkMark.style.display = "none";
-    }
-})
+    })
+    message.addEventListener("input", function() {
+        const wordCount = document.querySelector("#words-written");
+        const checkMark = document.querySelector("#check-mark");
+        wordCount.textContent = message.value.trim().length;
+        if (stringValidation(message.value,25)) {
+            checkMark.style.display = "initial";
+        } else {
+            checkMark.style.display = "none";
+        }
+    })
+    let submitContactForm = (event) => {
+        event.preventDefault();
+        var checklist = 0;
+        if (stringValidation(name.value, 5)) {
+            checklist += 1;
+        } else {
+            displayFormError(nameError);
+        }
+        if (emailValidation(emailAddresse.value)) {
+            checklist += 1;
+        } else {
+            displayFormError(emailAddresseError);
+        }
+        if (stringValidation(subject.value,15)) {
+            checklist +=1;
+        } else {
+            displayFormError(subjectError);
+        }
+        if (stringValidation(message.value, 25)) {
+            checklist += 1;
+        } else {
+            displayFormError(messageError);
+        }
+        const confirmation = document.querySelector(".confirmation");
+        if (checklist === 4) {
+            confirmation.style.visibility = "visible";
+            confirmation.style.opacity = 1;
+        }
+    }    
+    contactForm.addEventListener("submit", submitContactForm);
+}
+
 let displayFormError = (errorMessage) => {
     errorMessage.style.visibility = "visible";
     errorMessage.style.opacity = 1;
@@ -292,42 +357,6 @@ let hideFormError = (errorMessage) => {
     errorMessage.style.opacity = 0;
     errorMessage.style.visibility = "hidden";
     errorMessage.classList.remove("form-animation");
-}
-
-let submitContactForm = (event) => {
-    event.preventDefault();
-    var checklist = 0;
-    console.log(name.value);
-    if (stringValidation(name.value, 5)) {
-        checklist += 1;
-    } else {
-        displayFormError(nameError);
-    }
-    if (emailValidation(emailAddresse.value)) {
-        checklist += 1;
-    } else {
-        displayFormError(emailAddresseError);
-    }
-    if (stringValidation(subject.value,15)) {
-        checklist +=1;
-    } else {
-        displayFormError(subjectError);
-    }
-    if (stringValidation(message.value, 25)) {
-        checklist += 1;
-    } else {
-        displayFormError(messageError);
-    }
-    const confirmation = document.querySelector(".confirmation");
-    if (checklist === 4) {
-        confirmation.style.visibility = "visible";
-        confirmation.style.opacity = 1;
-    }
-}
-
-const contactForm = document.querySelector("#contact-form");
-if (contactForm) {
-    contactForm.addEventListener("submit", submitContactForm);
 }
 
 let stringValidation = (string, len) => {
