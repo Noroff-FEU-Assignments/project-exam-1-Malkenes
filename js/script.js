@@ -1,4 +1,5 @@
-import { makeApiCall } from "./modules/render.js";
+import { getCategoryId } from "./modules/functions.js";
+import { getTotalPages, makeApiCall } from "./modules/render.js";
 
 let toggleMenu = () => {
     const menu = document.querySelector(".menu");
@@ -77,15 +78,16 @@ let createCarouselItem = (data , vertical=false) => {
     <div class="description">
         <div class="title"><h3>${data.title.rendered}</h3></div>
         ${data.excerpt.rendered}
-        <a class="description" href="/html/blog.html?id=${data.id}&title=${data.title.rendered}">Read More</a>
+        <a href="/html/blog.html?id=${data.id}&title=${data.title.rendered}">Read More</a>
     </div>`;
     return container;
 }
-let createPreviewItem = (data) => {
+let createPreviewItem = (data, id) => {
     const imgUrl = data._embedded["wp:featuredmedia"]["0"].source_url;
     const container = document.createElement("div");
     container.classList.add("blog-post");
-    container.classList.add(data.slug);
+    //container.classList.add(data.slug);
+    container.setAttribute("data-id", id)
     container.innerHTML =`
     <div class="bg-image" style="background-image: url(${imgUrl})"></div>
     <div class="description">
@@ -107,7 +109,7 @@ let createListItem = (data) => {
     </div>`;
     return container;
 }
-const carousel = document.querySelector(".carousel-wrapper");
+const carousel = document.querySelector("#carousel-wrapper");
 if (carousel) {
     const newPosts = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?_embed");
     createCarousel(newPosts);
@@ -127,38 +129,26 @@ if (favoriteHeroes) {
 
 const preview = document.querySelector(".preview");
 if (preview) {
-    const post = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?categories=3&per_page=1&_embed");
-    preview.append(createPreviewItem(post[0]));
-    const post2 = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?categories=4&per_page=1&_embed");
-    preview.append(createPreviewItem(post2[0]));
-    const post3 = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?categories=5&per_page=1&_embed");
-    preview.append(createPreviewItem(post3[0]));
-    const post4 = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?categories=6&per_page=1&_embed");
-    preview.append(createPreviewItem(post4[0]));
-    const article = document.querySelector(".unleashing-mayhem-with-the-dartling-gunner");
-    const article2 = document.querySelector(".hero-spotlight-benjamin");
-    const article3 = document.querySelector(".how-to-beat-tree-stump");
-    const article4 = document.querySelector(".you-can-make-your-own-maps-now");
-
-    let setActiveArticle = (e) => {
-        if(e.target.classList.contains("reviews")) {
-            article.classList.toggle("active");
-        }
-        if(e.target.classList.contains("spotlight")) {
-            article2.classList.toggle("active");
-        }
-        if(e.target.classList.contains("guides")) {
-            article3.classList.toggle("active");
-        }
-        if(e.target.classList.contains("news")) {
-            article4.classList.toggle("active");
+    const category = document.querySelector(".categories");
+    for (let i = 0 ; i < category.children.length ; i++) {
+        if (getCategoryId(category.children[i].classList[0]) > 0) {
+            const post = await makeApiCall(`https://bloon.malke.no/wp-json/wp/v2/posts?categories=${getCategoryId(category.children[i].classList[0])}&per_page=1&_embed`);
+            preview.append(createPreviewItem(post[0],getCategoryId(category.children[i].classList[0])));
         }
     }
-    const categories = document.querySelector(".categories");
-    for (let i = 0 ; i < categories.children.length ; i++) {
-        categories.children[i].addEventListener("mouseover", setActiveArticle);
-        categories.children[i].addEventListener("mouseout", setActiveArticle);
-
+    let setActiveArticle = (e) => {
+        const id = getCategoryId(e.target.classList[0]);
+        if (id > 0) {
+            const article = document.querySelector(`[data-id="${id}"]`);
+            article.classList.toggle("active");
+        }
+    }
+    for (let i = 0 ; i < category.children.length ; i++) {
+        category.children[i].addEventListener("mouseover", setActiveArticle);
+        category.children[i].addEventListener("mouseout", setActiveArticle);
+        category.children[i].addEventListener("click", function() {
+            window.location.href = `/html/blogs.html?category=${category.children[i].classList[0]}`;
+        })
     }
 }
 const blogPage = document.querySelector(".blog");
@@ -201,7 +191,7 @@ if (blogPage) {
 
 
 async function displayBlogList(page) {
-    const posts = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?"+ page + "&_embed");
+    const posts = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts"+ page + "&_embed");
     posts.forEach(el => {
         blogList.append(createListItem(el));
     })
@@ -211,49 +201,55 @@ async function displayBlogList(page) {
         }
     }
 }
-let reload = (e) => {
-    const id = getCategoryId(e.target.classList[0]);
-    if(id > 0) {
-        blogList.innerHTML ="";
-        displayBlogList("categories=" + id);
-    }
-}
 const blogList = document.querySelector(".blog-posts");
 if (blogList) {
     let page = 1;
-    displayBlogList("page=" + page);
+    let category = "";
+    const filter = document.querySelectorAll(`input[name="filter"]`);
     const viewMore = document.querySelector(".view-more");
+    const queryString = document.location.search;
+    const params = new URLSearchParams(queryString);
+    const categoryParam = params.get("category");
+    if (categoryParam) {
+        filter.forEach(el => {
+            if (el.value === categoryParam) {
+                el.checked = true;
+            }
+        })
+        category = "&categories=" + getCategoryId(categoryParam);
+        history.pushState(null,null, "/html/blogs.html");
+    }
+    let totalPages = await getTotalPages(`https://bloon.malke.no/wp-json/wp/v2/posts?${category}`);
+    if (totalPages <= page) {
+        viewMore.style.display = "none";
+    }
+    displayBlogList("?page=" + page + category);
     viewMore.addEventListener("click" , function() {
         page = page + 1;
-        displayBlogList("page=" + page);
+        if (totalPages <= page) {
+            viewMore.style.display = "none";
+        }
+        if (totalPages >= page) {
+            displayBlogList("?page=" + page + category);
+        }
     })
-    const filter = document.querySelector(".filter");
-    for (let i = 0 ; i < filter.children.length ; i++) {
-        filter.children[i].addEventListener("click", reload);
+    let reload = (e) => {
+        const id = getCategoryId(e.target.value);
+        page = 1;
+        blogList.innerHTML ="";
+        if(id > 0) {
+            category = "&categories=" + id;
+        } else {
+            category = "";
+        }
+        displayBlogList("?page="+ page + category); 
     }
+    filter.forEach(el => {
+        el.addEventListener("change", reload);
+    })
 }
 
 
-let getCategoryId = (category) => {
-    let id = 0
-    switch (category) {
-        case "guides":
-            id = 5;
-            break;
-        case "news":
-            id = 6;
-            break;
-        case "spotlight":
-            id = 4;
-            break;
-        case "reviews":
-            id = 3;
-            break;
-        default:
-            break;
-    }
-    return id;
-}
 const contactForm = document.querySelector("#contact-form");
 if (contactForm) {
     const name = document.querySelector("#name");

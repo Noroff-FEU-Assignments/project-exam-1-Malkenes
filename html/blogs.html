@@ -31,7 +31,7 @@
     <main>
         <section>
             <div class="page-header">
-                <h1>Contact</h1>
+                <h1>Blog</h1>
                 <div class="flipped">
                     <i class="fas fa-blog"></i>
                 </div>
@@ -40,33 +40,24 @@
         <section class="blog-main">
             <div>
                 <div class="filter">
-                    <div class="active-filter">
-                        New Posts
-                    </div>
-                    <div class="guides">
-                        Guides
-                    </div>
-                    <div class="events">
-                        Events
-                    </div>
-                    <div class="news">
-                        News
-                    </div>
-                    <div class="spotlight">
-                        Spotlight
-                    </div>
-                    <div class="community">
-                        Community
-                    </div>
-                    <div class="reviews">
-                        Reviews
-                    </div>
-                    <div class="analysis">
-                        Analysis
-                    </div>
-                    <div class="misc">
-                        Misc
-                    </div>
+                    <input type="radio" id="new-posts" name="filter" value="new-posts" checked>
+                    <label for="new-posts">New Posts</label>
+                    <input type="radio" id="guides" name="filter" value="guides">
+                    <label for="guides">Guides</label>
+                    <input type="radio" id="events" name="filter" value="events">
+                    <label for="events">Events</label>
+                    <input type="radio" id="news" name="filter" value="news">
+                    <label for="news">News</label>
+                    <input type="radio" id="spotlight" name="filter" value="spotlight">
+                    <label for="spotlight">spotlight</label>
+                    <input type="radio" id="community" name="filter" value="community">
+                    <label for="community">Community</label>
+                    <input type="radio" id="reviews" name="filter" value="reviews">
+                    <label for="reviews">Reviews</label>
+                    <input type="radio" id="analysis" name="filter" value="analysis">
+                    <label for="analysis">Analysis</label>
+                    <input type="radio" id="misc" name="filter" value="misc">
+                    <label for="misc">Misc</label>
                 </div>
             </div>
             <div class="blog-posts">
@@ -75,6 +66,9 @@
         <section>
             <div class="view-more">View More</div>
         </section>
+        <div id="loading-indicator">
+            <div class="loader"></div>
+        </div>
     </main>
     <footer>
         <div>
