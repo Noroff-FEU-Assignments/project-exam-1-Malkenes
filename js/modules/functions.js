@@ -28,3 +28,11 @@ export let getCategoryId = (category) => {
     }
     return id;
 };
+export let buildQueryString = (params) => {
+    const queryString = Object.keys(params).map(key => {
+        if (key === "_embed") {
+            return key;
+        }
+        return `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`;}).join("&");
+    return queryString ? `?${queryString}` : "";
+};

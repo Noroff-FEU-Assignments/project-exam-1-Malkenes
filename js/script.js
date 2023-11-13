@@ -1,3 +1,4 @@
+import { buildQueryString } from "./modules/functions.js";
 import { getCategoryId } from "./modules/functions.js";
 import { getTotalPages, makeApiCall } from "./modules/render.js";
 
@@ -220,8 +221,8 @@ if (blogPage) {
 }
 
 
-async function displayBlogList(page) {
-    const posts = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts"+ page + "&_embed");
+async function displayBlogList(url) {
+    let posts = await makeApiCall(url);
     posts.forEach(el => {
         blogList.append(createListItem(el));
     })
@@ -230,55 +231,64 @@ async function displayBlogList(page) {
             blogList.children[i].classList.add("background");
         }
     }
+    const params = new URLSearchParams(url);
+    const pageParam = params.get("page");
+    const totalPages = await getTotalPages(url);
+    const viewMore = document.querySelector(".view-more");
+    if (totalPages === pageParam || totalPages === "1") {
+        viewMore.style.display = "none";
+    } else {
+        viewMore.style.display = "block";
+    }
 }
 const blogList = document.querySelector(".blog-posts");
 if (blogList) {
-    let page = 1;
-    let category = "";
-    const filter = document.querySelectorAll(`input[name="filter"]`);
-    const viewMore = document.querySelector(".view-more");
-    const queryString = document.location.search;
-    const params = new URLSearchParams(queryString);
-    const categoryParam = params.get("category");
-    if (categoryParam) {
-        filter.forEach(el => {
-            if (el.value === categoryParam) {
-                el.checked = true;
-            }
-        })
-        category = "&categories=" + getCategoryId(categoryParam);
-        history.pushState(null,null, "/html/blogs.html");
-    }
-    let totalPages = await getTotalPages(`https://bloon.malke.no/wp-json/wp/v2/posts?${category}`);
-    if (totalPages <= page) {
-        viewMore.style.display = "none";
-    }
-    displayBlogList("?page=" + page + category);
-    viewMore.addEventListener("click" , function() {
-        page = page + 1;
-        if (totalPages <= page) {
-            viewMore.style.display = "none";
+    const baseUrl = "https://bloon.malke.no/wp-json/wp/v2/posts";
+    let url = "";
+    let queryParams = {_embed: true}
+    let initialise = () => {
+        const queryString = document.location.search;
+        const params = new URLSearchParams(queryString);
+        const categoryParam = params.get("category");
+        if (categoryParam) {
+            queryParams.categories = getCategoryId(categoryParam);
+            history.pushState(null,null, "/html/blogs.html");
         }
-        if (totalPages >= page) {
-            displayBlogList("?page=" + page + category);
-        }
-    })
+        url = baseUrl + buildQueryString(queryParams);
+        console.log(url);
+    }
+
     let reload = (e) => {
         const id = getCategoryId(e.target.value);
-        page = 1;
         blogList.innerHTML ="";
         if(id > 0) {
-            category = "&categories=" + id;
+            queryParams.categories = id;
         } else {
-            category = "";
+            delete queryParams.categories;
         }
-        displayBlogList("?page="+ page + category); 
+        page = 2;
+        url = baseUrl + buildQueryString(queryParams);
+        displayBlogList(url);
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
     }
+    
+    initialise();
+    displayBlogList(url);
+    const filter = document.querySelectorAll(`input[name="filter"]`);
+    const viewMore = document.querySelector(".view-more");
+    let page = 2;
     filter.forEach(el => {
-        el.addEventListener("change", reload);
+        el.addEventListener("click", reload);
     })
-}
+    viewMore.addEventListener("click" , function() {
+        displayBlogList(url + `&page=${page}`);
+        page = page + 1;
+    })
 
+}
 
 const contactForm = document.querySelector("#contact-form");
 if (contactForm) {

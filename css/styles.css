@@ -154,9 +154,6 @@ nav,
     font-size: 1.5rem;
     font-weight: 500;
 }
-nav {
-    z-index: 3;
-}
 .hero-text span {
     font-size: 1.5em;
 }
@@ -508,7 +505,8 @@ footer .logo {
     text-decoration: none;
     box-shadow: -0.5rem 0.5rem 0.25rem rgba(0,0,0,0.25);
 }
-.blog-posts .title {
+.blog-posts .title,
+.view-more {
     margin-top: 1rem;
 }
 /* Blog */
