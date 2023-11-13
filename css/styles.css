@@ -41,7 +41,7 @@ figure,
 body {
     font-family: "outfit", sans-serif;
 }
-header,
+nav,
 footer,
 .carousel,
 .cta,
@@ -123,13 +123,13 @@ nav i,
 .flipped i {
     font-size: 2rem;
 }
-header,
+nav,
 .socials,
 .word-count,
 .description {
     justify-content: space-between;
 }
-header,
+nav,
 footer,
 .cta,
 .page-header,
@@ -153,6 +153,9 @@ nav,
 .categories div {
     font-size: 1.5rem;
     font-weight: 500;
+}
+nav {
+    z-index: 3;
 }
 .hero-text span {
     font-size: 1.5em;
@@ -243,7 +246,7 @@ nav a,
     display: block;
 }
 
-nav a {
+nav li a {
     text-decoration: none;
     color: unset;
     padding: 2rem 0;
@@ -295,9 +298,6 @@ header {
     padding: 0.5rem 1rem;
 }
 
-nav {
-    display: inherit;
-}
 nav li,
 .error-message,
 footer div,
@@ -313,6 +313,7 @@ footer div,
 
 .menu {
     display: inherit;
+    justify-content: end;
     top: 4rem;
     right: 0;
     max-height: 0;
@@ -585,7 +586,7 @@ footer .logo {
         flex-direction: row;
         top: 0;
     }
-    nav a {
+    nav li a {
         padding: 0;
     }
     .hamburger {
