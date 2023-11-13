@@ -161,6 +161,8 @@ async function displayBlog() {
     pageTitle.textContent = "Beyond the Bloons | " + blogTitle;
     const url = "https://bloon.malke.no/wp-json/wp/v2/posts/" + blogId + "?_embed";
     const blogData = await makeApiCall(url);
+    console.log(blogData);
+    const date = new Date(blogData.date_gmt);
     //const metaDescription = document.getElementById("description");
     //metaDescription.content = blogData.excerpt.rendered;
     blogPage.innerHTML = `
@@ -168,23 +170,51 @@ async function displayBlog() {
         <h1>${blogData.title.rendered}</h1>
         <img class="blog-image" id="modalBtn" src="${blogData._embedded["wp:featuredmedia"]["0"].source_url}"></img>
     </section>
-    <section><div class="blog-content">${blogData.content.rendered}<div></section>
-    <div class="modal" id="imageModal">
-        <img class="modal-image" src="${blogData._embedded["wp:featuredmedia"]["0"].source_url}"></img>
-    </div>`;
-    const modal = document.querySelector("#imageModal");
-    const btn = document.querySelector("#modalBtn");
-    btn.addEventListener("click" ,function(){
-    modal.style.display = "block";
-    })
+    <section>
+        <div class="blog-content">
+            <div class="post-info">
+                <p><strong>Pubished:</strong> ${date.toDateString()}</p>
+                <p><strong>Written by:</strong> ${blogData._embedded.author[0].name}</p>
+            </div>
+            <div class="content">${blogData.content.rendered}</div>
+            <div class="share">
+                <div class="twitter">
+                    <i class="fa-brands fa-x-twitter"></i>
+                    <p>Share on X</p>
+                </div>
+                <div class="facebook">
+                    <i class="fa-brands fa-facebook"></i>               
+                    <p>Share on Facebook</p>
+                </div>
+            </div>
+        </div>
+    </section>`;
+    
+    const imgElements = blogPage.querySelectorAll("img");
+    for (let i = 0 ; i < imgElements.length ; i++ ) {
+        blogPage.append(appendModal(imgElements[i].src , i));
+        const modal = document.querySelector(`#imageModal_${i}`);
+        imgElements[i].addEventListener("click", function(){
+            modal.style.display = "flex";
+        })
+    }
     window.onclick = function(event) {
-        if(event.target == modal) {
-            modal.style.display = "none";
+        for (let i = 0 ; i < imgElements.length ; i ++) {
+            var modal = document.querySelector(`#imageModal_${i}`);
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
     }
 }
 
-
+let appendModal = (src, number) => {
+    const container = document.createElement("div");
+    container.classList.add("modal")
+    container.id = `imageModal_${number}`;
+    container.innerHTML =`<img class="modal-image" src="${src}"></img>`;
+    return container;
+}
 if (blogPage) {
     displayBlog();
 }
