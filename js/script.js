@@ -391,7 +391,6 @@ if (contactForm) {
         }
     })
     let submitContactForm = (event) => {
-        event.preventDefault();
         var checklist = 0;
         if (stringValidation(name.value, 5)) {
             checklist += 1;
@@ -413,10 +412,8 @@ if (contactForm) {
         } else {
             displayFormError(messageError);
         }
-        const confirmation = document.querySelector(".confirmation");
-        if (checklist === 4) {
-            confirmation.style.visibility = "visible";
-            confirmation.style.opacity = 1;
+        if (checklist !== 4) {
+            event.preventDefault();
         }
     }    
     contactForm.addEventListener("submit", submitContactForm);
