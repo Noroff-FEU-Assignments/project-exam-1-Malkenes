@@ -1,6 +1,7 @@
 import { buildQueryString } from "./modules/functions.js";
+import { timeElapsed } from "./modules/functions.js";
 import { getCategoryId } from "./modules/functions.js";
-import { getTotalPages, makeApiCall } from "./modules/render.js";
+import { getTotalPages, makeApiCall, postApiData } from "./modules/render.js";
 
 let toggleMenu = () => {
     const menu = document.querySelector(".menu");
@@ -189,6 +190,15 @@ async function displayBlog() {
                 </div>
             </div>
         </div>
+    </section>
+    <section class="comment-section">
+        <div class="comments"></div>
+        <form id="post-comment">
+            <input id="name" type="text"/>
+            <input id="email" type="email"/>
+            <textarea id="comment"></textarea>
+            <input type="submit"/>
+        </form>
     </section>`;
     
     const imgElements = blogPage.querySelectorAll("img");
@@ -207,8 +217,36 @@ async function displayBlog() {
             }
         }
     }
+    const blogComments = await makeApiCall("http://bloon.malke.no/wp-json/wp/v2/comments?post=" +blogId);
+    const comments = document.querySelector(".comments");
+    blogComments.forEach(comment => {
+        if (comment.parent === 0) {
+            comments.append(displayComment(comment));
+        }
+    })
+    const postComment = document.querySelector("#post-comment");
+    postComment.addEventListener("submit" , (e) => {
+        e.preventDefault();
+        const [name , email , comment] = e.target.elements;
+        //postApiData("http://bloon.malke.no/wp-json/wp/v2/comments", {post: blogId, author_name: name.value, author_email: email.value, content: comment.value})
+    })
 }
 
+let displayComment = (comment) => {
+    const singleComment = document.createElement("div");
+    singleComment.id = "comment-" + comment.id;
+    singleComment.classList.add("comment");
+    singleComment.innerHTML = `
+    <div>
+        <img src= ${comment.author_avatar_urls[48]}>
+    </div>
+    <div>
+        <strong>${comment.author_name}</strong>
+        ${timeElapsed(comment.date)}
+        ${comment.content.rendered}
+    </div>`;
+    return singleComment;
+}
 let appendModal = (src, number) => {
     const container = document.createElement("div");
     container.classList.add("modal")

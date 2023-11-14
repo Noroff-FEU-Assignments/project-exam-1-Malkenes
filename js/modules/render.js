@@ -27,6 +27,18 @@ export async function getTotalPages(url) {
        console.log(error); 
     }
 }
+export async function postApiData(url , data={}) {
+    console.log(data);
+    const response = await fetch(url, {
+        method: "post",
+        headers: {
+            "Content-Type" : "application/json",
+        },
+        body: JSON.stringify(data)
+    })
+    return response.json();
+}
+
 let showLoadingIndicator = () => {
     const loadingIndicator = document.querySelector("#loading-indicator");
     loadingIndicator.style.display = "flex"
