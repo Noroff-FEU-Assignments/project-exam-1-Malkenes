@@ -13,7 +13,7 @@ body,
 form,
 .title,
 .menu,
-.flipped,
+.page-header i,
 .background.blog-post .title,
 .introduction div {
     background: var(--alice-blue);
@@ -43,6 +43,7 @@ button,
 }
 body,
 figure,
+.page-header h1,
 .title h3 {   
     margin: 0;
 }
@@ -62,6 +63,7 @@ form,
 .favorite-heroes,
 .description,
 .explore,
+.page-header,
 .filter,
 .blog-posts,
 .offers li,
@@ -95,6 +97,7 @@ form,
     gap: 1rem;
 }
 button,
+.cta,
 footer,
 .blog-post,
 .newsletter,
@@ -102,7 +105,8 @@ form,
 .contact-form,
 .filter,
 .introduction div,
-.flipped i,
+.page-header,
+.page-header i,
 .introduction,
 .blog-header,
 .mission-statement,
@@ -128,12 +132,13 @@ h1,
 .socials,
 .error-message,
 nav i,
-.flipped i {
+.page-header i {
     font-size: 2rem;
 }
 nav,
 .socials,
 .word-count,
+.page-header,
 .description {
     justify-content: space-between;
 }
@@ -209,7 +214,6 @@ a.cta {
     font-size: 1rem;
 }
 .menu,
-.flipped,
 .carousel button,
 .horizontal .title {
     position: absolute;
@@ -304,7 +308,7 @@ nav li a {
 }
 /* Header */
 .favorite-heroes span,
-header {
+nav {
     padding: 0.5rem 1rem;
 }
 
@@ -336,24 +340,10 @@ nav li,
     max-height: 100%;
 }
 .page-header {
-    display: inline-flex;
-    gap: -1rem;
     box-shadow: 0 0.5rem 0.25rem rgba(0,0,0,0.25);
 
 }
-.page-header h1 {
-    padding: 0 5rem 0 1rem;
-}
-.flipped {
-    right: -2rem;
-    width: max-content;
-    aspect-ratio: 1/1;
-    rotate: 45deg;
-    border: solid 8px var(--uranian-blue);
-}
-.flipped i {
-    rotate: -45deg;
-}
+
 /* Footer */
 .footer div {
     max-width: 300px;
@@ -512,6 +502,9 @@ form input {
 .blog-posts {
     flex-wrap: wrap;
 }
+.filter {
+    border: none;
+}
 .filter > * {
     padding: 1rem 2rem;
     border-radius: 2rem;
@@ -548,6 +541,9 @@ form input {
 .intro-text {
     max-width: 600px;
     margin: auto;
+}
+.intro-text {
+    padding-top: 3rem;
 }
 .post-info {
     padding: 0.5rem;
@@ -613,7 +609,7 @@ form input {
 
 @media (min-width: 576px) {
     /* Header */
-    header {
+    nav {
         padding: 1rem 2rem;
     }
     .menu {
@@ -643,6 +639,9 @@ form input {
     }
     section {
         padding: 2rem;
+    }
+    .page-header {
+        width: 400px;
     }
     /* Index */
 
