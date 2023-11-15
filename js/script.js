@@ -179,26 +179,39 @@ async function displayBlog() {
                 <p><strong>Written by:</strong> ${blogData._embedded.author[0].name}</p>
             </div>
             <div class="content">${blogData.content.rendered}</div>
-            <div class="share">
-                <div class="twitter">
-                    <i class="fa-brands fa-x-twitter"></i>
-                    <p>Share on X</p>
-                </div>
-                <div class="facebook">
-                    <i class="fa-brands fa-facebook"></i>               
-                    <p>Share on Facebook</p>
-                </div>
-            </div>
         </div>
     </section>
     <section class="comment-section">
-        <div class="comments"></div>
-        <form id="post-comment">
-            <input id="name" type="text"/>
-            <input id="email" type="email"/>
-            <textarea id="comment"></textarea>
-            <input type="submit"/>
-        </form>
+        <div class="share">
+            <div class="twitter">
+                <i class="fa-brands fa-x-twitter"></i>
+                <p>Share on X</p>
+            </div>
+            <div class="facebook">
+                <i class="fa-brands fa-facebook"></i>               
+                <p>Share on Facebook</p>
+            </div>
+        </div>
+        <h2>Leave a reply</h2>
+        <div class="comment-wrapper">
+            <form id="post-comment">
+                <div class="word-count">
+                    <label for="comment">Comment</label>
+                    <div><span id="words-written">0</span>/25 <i class="fas fa-check" id="check-mark"></i></div>
+                </div>
+                <textarea id="comment" name="comment" cols="30" rows="10"></textarea>
+                <p class="form-error" id="comment-error">Comment needs to be more than 25 characters</p>
+                <label for="name">Name</label>
+                <input id="name" type="text">
+                <p class="form-error" id="name-error">Name needs to more than 5 characters</p>
+                <label for="email-address">Email address</label>
+                <input id="email-address" type="email">
+                <p class="form-error" id="email-address-error">Email not valid</p>
+                <button class="cta">Submit</button>
+                <p class="confirmation" id="success">Comment has been recived and is up for review</p>
+            </form>
+            <div class="comments"></div>
+        </div>
     </section>`;
     
     const imgElements = blogPage.querySelectorAll("img");
@@ -217,18 +230,91 @@ async function displayBlog() {
             }
         }
     }
-    const blogComments = await makeApiCall("http://bloon.malke.no/wp-json/wp/v2/comments?post=" +blogId);
+    const blogComments = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/comments?post=" +blogId);
     const comments = document.querySelector(".comments");
+    if (blogComments.length === 0) {
+        comments.style.display = "grid";
+        comments.innerHTML = `<p class="no-comments">no comments yet</p>`;
+    }
     blogComments.forEach(comment => {
         if (comment.parent === 0) {
             comments.append(displayComment(comment));
         }
     })
     const postComment = document.querySelector("#post-comment");
+    const emailAddress = document.querySelector("#email-address");
+    const emailAddressError = document.querySelector("#email-address-error");
+    emailAddress.addEventListener("focusout", function() {
+        if (!emailValidation(emailAddress.value) && emailAddress.value.trim().length > 0) {
+            displayFormError(emailAddressError);
+        } else {
+            hideFormError(emailAddressError);
+        }
+    })
+    emailAddress.addEventListener("focusin" , function() {
+        hideFormError(emailAddressError);
+    })
+
+    const name = document.querySelector("#name");
+    const nameError = document.querySelector("#name-error");
+    name.addEventListener("focusout", function() {
+        if(!stringValidation(name.value,5) && name.value.trim().length > 0) {
+            displayFormError(nameError);
+        } else {
+            hideFormError(nameError);
+        }
+    })
+    name.addEventListener("focusin", function() {
+        hideFormError(nameError);
+    });
+    const message = document.querySelector("#comment");
+    const messageError = document.querySelector("#comment-error");
+
+    message.addEventListener("focusout", function() {
+        if(!stringValidation(message.value,25) && message.value.trim().length > 0) {
+            displayFormError(messageError);
+        } else {
+            hideFormError(messageError);
+        }
+    })
+    message.addEventListener("focusin", function() {
+        hideFormError(messageError);
+    })
+    message.addEventListener("input", function() {
+        const wordCount = document.querySelector("#words-written");
+        const checkMark = document.querySelector("#check-mark");
+        wordCount.textContent = message.value.trim().length;
+        if (stringValidation(message.value,25)) {
+            checkMark.style.display = "initial";
+        } else {
+            checkMark.style.display = "none";
+        }
+    })
+
+    const confirmation = document.querySelector("#success");
     postComment.addEventListener("submit" , (e) => {
         e.preventDefault();
-        const [name , email , comment] = e.target.elements;
-        //postApiData("http://bloon.malke.no/wp-json/wp/v2/comments", {post: blogId, author_name: name.value, author_email: email.value, content: comment.value})
+        var checklist = 0;
+        if (stringValidation(name.value,5)) {
+            checklist += 1;
+        } else {
+            displayFormError(nameError);
+        }
+        if (emailValidation(emailAddress.value)) {
+            checklist += 1;
+        } else {
+            displayFormError(emailAddressError);
+        }
+        if (stringValidation(message.value, 25)) {
+            checklist += 1;
+        } else {
+            displayFormError(messageError);
+        }
+        if (checklist === 3) {
+            postApiData("https://bloon.malke.no/wp-json/wp/v2/comments", {post: blogId, author_name: name.value, author_email: emailAddress.value, content: message.value});
+            postComment.reset()
+            displayFormError(confirmation);
+        }
     })
 }
 
@@ -326,6 +412,27 @@ if (blogList) {
         page = page + 1;
     })
 
+}
+let newsLetterValidation = () => {
+    const newsletterForm = document.querySelector(".newsletter-form");
+    const email = document.querySelector("#email");
+    const emailError = document.querySelector("#email-error");
+    email.addEventListener("focusout", function() {
+        if (!emailValidation(email.value) && email.value.trim().length > 0) {
+            displayFormError(emailError);
+        } else {
+            hideFormError(emailError);
+        }
+    })
+    email.addEventListener("focusin" , function() {
+        hideFormError(emailError);
+    })
+    newsletterForm.addEventListener("submit" ,function(e) {
+        if (!emailValidation(email.value)) {
+            displayFormError(emailError);
+            e.preventDefault();
+        }
+    })
 }
 
 const contactForm = document.querySelector("#contact-form");
@@ -442,3 +549,5 @@ let emailValidation = (email) => {
     const regEx = /\S+@\S+.\S+/;
     return regEx.test(email);
 }
+
+newsLetterValidation();

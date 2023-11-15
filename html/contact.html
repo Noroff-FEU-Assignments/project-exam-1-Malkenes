@@ -40,63 +40,55 @@
         <section>
             <div class="contact-form">
                 <h2>Send Us a Message</h2>
-                <form name="contact" id="contact-form" method="post" data-netlify="true">
-                    <div class="form-input">
-                        <label for="name">Name:</label>
-                        <input type="text" id="name">
-                        <p class="form-error" id="name-error">Name needs to more than 5 characters</p>
+                <form name="contact" id="contact-form" method="post" data-netlify="true">   
+                    <label for="name">Name</label>
+                    <input type="text" id="name">
+                    <p class="form-error" id="name-error">Name needs to more than 5 characters</p>
+                    <label for="email-addresse">Email address</label>
+                    <input type="email" id="email-addresse">
+                    <p class="form-error" id="email-adresse-error">Email not valid</p>
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject">
+                    <p class="form-error" id="subject-error">Subject needs to be more than 15 characters</p>
+                    <div class="word-count">
+                        <label for="message">Message</label>
+                         <div><span id="words-written">0</span>/25 <i class="fas fa-check" id="check-mark"></i></div>
                     </div>
-                    <div class="form-input">
-                        <label for="email-addresse">Email address:</label>
-                        <input type="text" id="email-addresse">
-                        <p class="form-error" id="email-adresse-error">Email not valid</p>
-                    </div>
-                    <div class="form-input">
-                        <label for="subject">Subject:</label>
-                        <input type="text" id="subject">
-                        <p class="form-error" id="subject-error">Subject needs to be more than 15 characters</p>
-                    </div>
-                    <div class="form-input">
-                        <div class="word-count">
-                            <label for="message">Message:</label>
-                            <div><span id="words-written">0</span>/25 <i class="fas fa-check" id="check-mark"></i></div>
-                        </div>
-                        <textarea name="message" id="message" cols="30" rows="10"></textarea>
-                        <p class="form-error" id="message-error">Message needs to be more than 25 characters</p>
-                    </div>
+                    <textarea name="message" id="message" cols="30" rows="10"></textarea>
+                    <p class="form-error" id="message-error">Message needs to be more than 25 characters</p>
                     <button class="cta">Submit</button>
-                    <div class="confirmation">
-                        <p>Thanks for sending us a message, we will respond as quickly as possible</p>
-                    </div>
                 </form>
             </div>
         </section>
     </main>
     <footer>
-        <div>
-            <h2>Disclaimer</h2>
-            <p>This website is not affiliated with, 
-                endorsed by, or sponsored by NinjaKiwi</p>
-        </div>
-        <div>
-            <div class="socials">
-                <div class="logo"></div>
-                <h2>Beyond the Bloons</h2>
+        <div class="footer">
+            <div>
+                <h2>Disclaimer</h2>
+                <p>This website is not affiliated with, 
+                    endorsed by, or sponsored by NinjaKiwi</p>
             </div>
-            <div class="socials">
-                <i class="fa-brands fa-youtube"></i>
-                <i class="fa-brands fa-discord"></i>
-                <i class="fa-brands fa-instagram"></i>
-                <i class="fa-brands fa-x-twitter"></i>
+            <div>
+                <div class="socials">
+                    <div class="logo"></div>
+                    <h2>Beyond the Bloons</h2>
+                </div>
+                <div class="socials">
+                    <i class="fa-brands fa-youtube"></i>
+                    <i class="fa-brands fa-discord"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-x-twitter"></i>
+                </div>
             </div>
-        </div>
-        <div class="newsletter">
-            <h2>Subscibe to our newsletter</h2>
-            <div class="form-input">
-                <label for="email">Email address:</label>
-                <input type="text" id="email">
+            <div>
+                <h2>Subscibe to our newsletter</h2>
+                <form name="newsletter" class="newsletter-form" method="post" data-netlify="true">
+                    <label for="email">Email address</label>
+                    <input type="email" id="email">
+                    <p class="form-error" id="email-error">Email not valid</p>
+                    <button class="cta">Submit</button>
+                </form>
             </div>
-            <button class="cta">Submit</button>
         </div>
     </footer>
     <script src="/js/script.js" type="module"></script>

@@ -36,8 +36,6 @@
                     <i class="fas fa-users"></i>
                 </div>
             </div>
-        </section>
-        <section>
             <p class="intro-text">Welcome to Beyond the Bloons, the premier destination for Bloons Tower Defense 6 enthusiasts and strategists. We're dedicated to helping players of all levels master the art of Bloons popping and tower defense.</p>
         </section>
         <section class="mission">
@@ -99,30 +97,33 @@
         </section>
     </main>
     <footer>
-        <div>
-            <h2>Disclaimer</h2>
-            <p>This website is not affiliated with, 
-                endorsed by, or sponsored by NinjaKiwi</p>
-        </div>
-        <div>
-            <div class="socials">
-                <div class="logo"></div>
-                <h2>Beyond the Bloons</h2>
+        <div class="footer">
+            <div>
+                <h2>Disclaimer</h2>
+                <p>This website is not affiliated with, 
+                    endorsed by, or sponsored by NinjaKiwi</p>
             </div>
-            <div class="socials">
-                <i class="fa-brands fa-youtube"></i>
-                <i class="fa-brands fa-discord"></i>
-                <i class="fa-brands fa-instagram"></i>
-                <i class="fa-brands fa-x-twitter"></i>
+            <div>
+                <div class="socials">
+                    <div class="logo"></div>
+                    <h2>Beyond the Bloons</h2>
+                </div>
+                <div class="socials">
+                    <i class="fa-brands fa-youtube"></i>
+                    <i class="fa-brands fa-discord"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-x-twitter"></i>
+                </div>
             </div>
-        </div>
-        <div class="newsletter">
-            <h2>Subscibe to our newsletter</h2>
-            <div class="form-input">
-                <label for="email">Email address:</label>
-                <input type="text" id="email">
+            <div>
+                <h2>Subscibe to our newsletter</h2>
+                <form name="newsletter" class="newsletter-form" method="post" data-netlify="true">
+                    <label for="email">Email address</label>
+                    <input type="email" id="email">
+                    <p class="form-error" id="email-error">Email not valid</p>
+                    <button class="cta">Submit</button>
+                </form>
             </div>
-            <button class="cta">Submit</button>
         </div>
     </footer>
     <script src="/js/script.js" type="module"></script>
