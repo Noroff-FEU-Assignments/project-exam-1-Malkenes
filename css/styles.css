@@ -720,7 +720,7 @@ form input {
         flex-direction: column;
     }
     .blog-posts > * {
-        width: calc(50% - 3rem);
+        width: calc(50% - 2.6rem);
         max-height: initial;
     }
     .filter {
@@ -829,12 +829,14 @@ form input {
     }
 }
 @media (hover: hover) {
-    .blog-posts .blog-post:hover {
+    .blog-posts .blog-post:hover,
+    .view-more:hover,
+    .filter > *:hover {
         background: rgba(4,76,164,0.1);
     }
     nav a:hover {
         color: var(--polynesian-blue);
-    }    
+    }  
 }
 
 @keyframes shake {
