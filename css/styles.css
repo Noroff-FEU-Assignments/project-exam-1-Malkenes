@@ -9,6 +9,12 @@ textarea {
 .no-comments {
     place-self: center;
 }
+.bg-image-test {
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
 body,
 form,
 .title,
@@ -35,7 +41,6 @@ form label,
     background: var(--uranian-blue);
 }
 footer,
-button,
 .cta,
 .filter input:checked + label {
     background: var(--polynesian-blue);
@@ -66,8 +71,7 @@ form,
 .page-header,
 .filter,
 .blog-posts,
-.offers li,
-.blog-posts > * {
+.offers li {
     display: flex;
 }
 .footer,
@@ -96,7 +100,6 @@ form,
 .blog-posts {
     gap: 1rem;
 }
-button,
 .cta,
 footer,
 .blog-post,
@@ -114,15 +117,13 @@ form,
 .view-more {
     padding: 1rem;
 }
-.bg-image,
+.blog-post > *,
 .blog-image,
 .menu,
 .categories,
 .modal,
 #loading-indicator,
-.vertical .description,
 .blog figure img,
-.blog-posts .description,
 .mission img,
 .battle-call img,
 .blog-posts > * {
@@ -132,7 +133,7 @@ h1,
 .socials,
 .error-message,
 nav i,
-.page-header i {
+.page-header {
     font-size: 2rem;
 }
 nav,
@@ -152,6 +153,7 @@ nav,
     align-items: center;
 }
 main {
+    margin: 100px 0;
     min-height: 100vh;
 }
 h1,
@@ -180,46 +182,38 @@ section {
 .blog figure img {
     height: auto;
 }
-button,
+
 .cta {
     cursor: pointer;
     border: solid 2px var(--alice-blue);
 }
-.cta {
-    margin: 1rem 0;
-}
 a.cta {
     display: inline-block;
 }
-.page-header,
 .carousel,
 .description,
 .mission-statement {
     position: relative;
 }
-.vertical .description {
-    max-width: 60%;
-}
 .horizontal .description {
     flex: 1;
 }
 .title {
-    padding: 0.5rem;
-    border-radius: 1rem;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
     width: fit-content;
-    border: solid 2px var(--polynesian-blue);
+    border: solid 1px var(--polynesian-blue);
 }
 .title h3,
 .carousel i {
     font-size: 1rem;
 }
-.menu,
 .carousel button,
 .horizontal .title {
     position: absolute;
 }
 .horizontal .title {
-    bottom: 100%;
+    bottom: 110%;
     max-width: 60%;
 }
 .vertical {
@@ -268,7 +262,7 @@ nav li a {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 10000;
     left: 0;
     top: 0;
     height: 100%;
@@ -276,12 +270,24 @@ nav li a {
     overflow: auto;
     background: rgba(0,0,0,0.9);
 }
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    color: white;
+    font-size: 4rem;
+    cursor: pointer;
+}
 .modal-image {
     margin: auto;
     width: 80%;
+    background: white;
 }
-.blog-post:hover {
-    background: rgba(4,76,164,0.1);
+.blog img {
+    cursor: pointer;
+}
+.blog-post {
+    gap: 0.5rem;
 }
 #loading-indicator {
     position: fixed;
@@ -307,11 +313,18 @@ nav li a {
     border: solid 8px red;
 }
 /* Header */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: var(--alice-blue);
+    z-index: 1000;
+    box-shadow: 0 0.1rem 0.25rem rgba(0,0,0,0.25);
+}
 .favorite-heroes span,
 nav {
     padding: 0.5rem 1rem;
 }
-
 nav li,
 .error-message,
 .footer div,
@@ -326,22 +339,24 @@ nav li,
 }
 
 .menu {
+    margin: 0;
+    position: fixed;
     display: inherit;
     justify-content: end;
-    top: 4rem;
+    top: 5rem;
     right: 0;
     max-height: 0;
     transition: max-height 1000ms;
     overflow: hidden;
     padding: 0;
-    z-index: 1;
+    z-index: 100;
 }
 .show-menu {
     max-height: 100%;
+    box-shadow: 0 0.1rem 0.25rem rgba(0,0,0,0.25);
 }
 .page-header {
     box-shadow: 0 0.5rem 0.25rem rgba(0,0,0,0.25);
-
 }
 
 /* Footer */
@@ -380,6 +395,10 @@ form input {
     box-shadow: 0 0.5rem 0.25rem rgba(0,0,0,0.25);
     border-width: 1px;
 }
+form textarea,
+form input {
+    font-family: "outfit", sans-serif;
+}
 .confirmation,
 .form-error {
     visibility: hidden;
@@ -405,9 +424,6 @@ form input {
 .hero-text span {
     color: var(--polynesian-blue);
 }
-.carousel {
-    box-shadow: -0.5rem 0.5rem 0.25rem rgba(0,0,0,0.25);
-}
 .carousel button {
     top: 0.5em;
 }
@@ -425,10 +441,15 @@ form input {
 .introduction {
     background-image: url(../images/BloonBackground.jpg);
 }
+.introduction a {
+    margin-top: 1rem;
+    width: max-content;
+}
 .introduction div {
     border-radius: 1rem;
 }
-.favorite-heroes .blog-post {
+.favorite-heroes .blog-post,
+.carousel {
     background: linear-gradient(90deg, var(--alice-blue), var(--uranian-blue));
     border: 1px solid var(--polynesian-blue);
     box-shadow: -25px 25px 2px 0px rgba(4, 76, 164, 0.05), -20px 20px 2px 0px rgba(4, 76, 164, 0.10), -15px 15px 2px 0px rgba(4, 76, 164, 0.20), -10px 10px 2px 0px rgba(4, 76, 164, 0.30), -5px 5px 2px 0px rgba(4, 76, 164, 0.40);
@@ -515,13 +536,19 @@ form input {
 }
 .blog-posts > * {
     text-decoration: none;
-    box-shadow: -0.5rem 0.5rem 0.25rem rgba(0,0,0,0.25);
+    border: solid 1px;
+    box-shadow: 0 0.5rem 0.25rem rgba(0,0,0,0.25);
 }
-.blog-posts .title,
 .view-more {
     margin-top: 1rem;
+    text-align: center;
+    box-shadow: 0 0.5rem 0.25rem rgba(0,0,0,0.25);
 }
 /* Blog */
+.blog-header {
+    display: grid;
+    justify-items: center;
+}
 #post-comment {
     display: flex;
     flex-direction: column;
@@ -532,10 +559,12 @@ form input {
 #post-comment input {
     height: 2rem;
 }
-.blog-image {
-    max-height: 400px;
-    object-fit: contain;
-    object-position: left;
+.blog-image img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    border-radius: 1rem;
 }
 .blog-content,
 .intro-text {
@@ -544,10 +573,6 @@ form input {
 }
 .intro-text {
     padding-top: 3rem;
-}
-.post-info {
-    padding: 0.5rem;
-    border: solid;
 }
 .share {
     display: flex;
@@ -610,11 +635,12 @@ form input {
 @media (min-width: 576px) {
     /* Header */
     nav {
-        padding: 1rem 2rem;
+        padding: 0.5rem 2rem;
     }
     .menu {
         position: relative;
         max-height: fit-content;
+        width: fit-content;
         flex-direction: row;
         top: 0;
     }
@@ -631,6 +657,10 @@ form input {
     .vertical .title {
         display: block;
     }
+
+    .blog-image {
+        height: 400px;
+    }
 }
 @media (min-width: 768px) {    
     .introduction,
@@ -644,10 +674,16 @@ form input {
         width: 400px;
     }
     /* Index */
-
+    #carousel-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+    .vertical .bg-image {
+        aspect-ratio: initial;
+    }
     .carousel {
         flex: 1;
-        margin: 0 2rem;
     }
     .carousel button {
         top: 0;
@@ -689,21 +725,22 @@ form input {
     }
     .filter {
         position: sticky;
-        top: 1rem;
+        top: 7rem;
     }
     /* Blog */
     .blog-header {
-        display: grid;
         grid-template-columns: 1fr 2fr;
         gap: 1rem;
         align-items: center;
         padding: 1rem 2rem;
+        justify-items: start;
     }
-    .blog-header h1 {
-        text-align: end;
+    .post-info {
+        grid-column: 1;
+        grid-row: 2;
     }
     .blog-image {
-        object-position: right;
+        grid-row: 1/3;
     }
     .comment-wrapper {
         grid-template-columns: 1fr 1fr;
@@ -756,14 +793,6 @@ form input {
         max-width: 20rem;
         font-size: 4rem;
     }
-    #carousel-wrapper {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
-    }
-    .vertical .bg-image {
-        aspect-ratio: initial;
-    }
     .categories {
         min-width: 500px;
         flex: 1;
@@ -795,6 +824,17 @@ form input {
         max-width: 1200px;
         margin: auto;
     }
+    main {
+        margin: 100px auto;
+    }
+}
+@media (hover: hover) {
+    .blog-posts .blog-post:hover {
+        background: rgba(4,76,164,0.1);
+    }
+    nav a:hover {
+        color: var(--polynesian-blue);
+    }    
 }
 
 @keyframes shake {

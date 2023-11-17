@@ -17,6 +17,9 @@ export let getCategoryId = (category) => {
         case "analysis":
             id = 7;
             break;
+        case "community":
+            id = 8;
+            break;
         case "misc":
             id = 10;
             break;

@@ -23,25 +23,27 @@ const hamburger = document.querySelector(".hamburger");
 
 hamburger.addEventListener("click", toggleMenu);
 
-//makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts");
 let createCarousel = (data) => {
     let j = 0;
-    for (let i = 0 ; i < 3 ; i++) {
-        if (i%3 === 0) {
-            carousel.append(createCarouselItem(data[i]));
-        } else {
-            carousel.append(createCarouselItem(data[i], true));
-        }
-    }
+    let intervalId = null;
     const previous = document.querySelector(".previous");
     const next = document.querySelector(".next");
-    previous.addEventListener("click", function() {
-        if (j > 0) {
-            j = j - 3;
-        } else {
-            j = 6
+
+    let onPrevious = () => {
+        j = (j - 3) % data.length;
+        if (j < 0) {
+            j = 6;
         }
-        carousel.innerHTML = ""
+        displayCarousel();
+    }
+
+    let onNext = () => {
+        j = (j + 3) % data.length;
+        displayCarousel();
+    }
+
+    let displayCarousel = () => {
+        carousel.innerHTML = "";
         for (let i = j ; i < j+3 ; i++) {
             if (i%3 === 0) {
                 carousel.append(createCarouselItem(data[i]));
@@ -49,22 +51,17 @@ let createCarousel = (data) => {
                 carousel.append(createCarouselItem(data[i], true));
             }
         }
-    })
-    next.addEventListener("click" , function() {
-        if (j < 6) {
-            j = j + 3;
-        } else {
-            j = 0;
-        }
-        carousel.innerHTML = ""
-        for (let i = j ; i < j+3 ; i++) {
-            if (i%3 === 0) {
-                carousel.append(createCarouselItem(data[i]));
-            } else {
-                carousel.append(createCarouselItem(data[i], true));
-            }
-        }
-    })
+        clearInterval(intervalId);
+        startInterval();
+    }
+
+    let startInterval = () => {
+        intervalId = setInterval(onNext,5000);
+    }
+
+    onNext();
+    previous.addEventListener("click", onPrevious)
+    next.addEventListener("click", onNext)
 }
 let createCarouselItem = (data , vertical=false) => {
     const imgUrl = data._embedded["wp:featuredmedia"]["0"].source_url;
@@ -88,10 +85,9 @@ let createPreviewItem = (data, id) => {
     const imgUrl = data._embedded["wp:featuredmedia"]["0"].source_url;
     const container = document.createElement("div");
     container.classList.add("blog-post");
-    //container.classList.add(data.slug);
     container.setAttribute("data-id", id)
     container.innerHTML =`
-    <div class="bg-image" style="background-image: url(${imgUrl})"></div>
+    <div class="bg-image-test" style="background-image: url(${imgUrl})"></div>
     <div class="description">
         <div class="title"><h3>${data.title.rendered}</h3></div>
         ${data.excerpt.rendered}
@@ -113,7 +109,7 @@ let createListItem = (data) => {
 }
 const carousel = document.querySelector("#carousel-wrapper");
 if (carousel) {
-    const newPosts = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?_embed");
+    const newPosts = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?per_page=9&_embed");
     createCarousel(newPosts);
 }
 
@@ -163,21 +159,20 @@ async function displayBlog() {
     pageTitle.textContent = "Beyond the Bloons | " + blogTitle;
     const url = "https://bloon.malke.no/wp-json/wp/v2/posts/" + blogId + "?_embed";
     const blogData = await makeApiCall(url);
-    console.log(blogData);
     const date = new Date(blogData.date_gmt);
-    //const metaDescription = document.getElementById("description");
-    //metaDescription.content = blogData.excerpt.rendered;
     blogPage.innerHTML = `
     <section class="blog-header">
         <h1>${blogData.title.rendered}</h1>
-        <img class="blog-image" id="modalBtn" src="${blogData._embedded["wp:featuredmedia"]["0"].source_url}"></img>
+        <div class="blog-image">
+            <img src="${blogData._embedded["wp:featuredmedia"]["0"].source_url}"></img>
+        </div>
+        <div class="post-info">
+            <p><strong>Published:</strong> ${date.toDateString()}</p>
+            <p><strong>Written by:</strong> ${blogData._embedded.author[0].name}</p>
+        </div>
     </section>
     <section>
         <div class="blog-content">
-            <div class="post-info">
-                <p><strong>Pubished:</strong> ${date.toDateString()}</p>
-                <p><strong>Written by:</strong> ${blogData._embedded.author[0].name}</p>
-            </div>
             <div class="content">${blogData.content.rendered}</div>
         </div>
     </section>
@@ -230,6 +225,17 @@ async function displayBlog() {
             }
         }
     }
+    const closeElement = document.querySelectorAll(".close-modal");
+    console.log(closeElement);
+    closeElement.forEach(btn => {
+        console.log(btn);   
+        btn.onclick = function(e) {
+            for (let i = 0 ; i < imgElements.length ; i ++) {
+                var modal = document.querySelector(`#imageModal_${i}`);
+                modal.style.display = "none";
+            }    
+        }
+    })
     const blogComments = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/comments?post=" +blogId);
     const comments = document.querySelector(".comments");
     if (blogComments.length === 0) {
@@ -337,7 +343,9 @@ let appendModal = (src, number) => {
     const container = document.createElement("div");
     container.classList.add("modal")
     container.id = `imageModal_${number}`;
-    container.innerHTML =`<img class="modal-image" src="${src}"></img>`;
+    container.innerHTML =`
+    <span class="close-modal">&times;</span>
+    <img class="modal-image" src="${src}">`;
     return container;
 }
 if (blogPage) {
@@ -375,6 +383,8 @@ if (blogList) {
         const params = new URLSearchParams(queryString);
         const categoryParam = params.get("category");
         if (categoryParam) {
+            const category = document.querySelector("#" + categoryParam);
+            category.checked = "true";
             queryParams.categories = getCategoryId(categoryParam);
             history.pushState(null,null, "/html/blogs.html");
         }
