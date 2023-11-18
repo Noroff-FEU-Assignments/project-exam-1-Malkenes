@@ -102,9 +102,10 @@ form,
 }
 .cta,
 footer,
-.blog-post,
+.description,
 .newsletter,
 form,
+.carousel,
 .contact-form,
 .filter,
 .introduction div,
@@ -157,15 +158,13 @@ main {
     min-height: 100vh;
 }
 h1,
-.cta,
-.categories div {
+.cta {
     font-weight: 600;
 }
 
 h2, 
 nav, 
-.intro-text,
-.categories div {
+.intro-text {
     font-size: 1.5rem;
     font-weight: 500;
 }
@@ -197,6 +196,9 @@ a.cta {
 }
 .horizontal .description {
     flex: 1;
+}
+.description {
+    box-sizing: border-box;
 }
 .title {
     padding: 0.25rem;
@@ -424,12 +426,13 @@ form input {
 .hero-text span {
     color: var(--polynesian-blue);
 }
-.carousel button {
-    top: 0.5em;
+#carousel-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
-.carousel h2 {
-    padding: 1rem;
-    margin: 0;
+.carousel button {
+    top: 1em;
 }
 .previous {
     left: calc(100% - 10em);
@@ -450,8 +453,7 @@ form input {
 }
 .favorite-heroes .blog-post,
 .carousel {
-    background: linear-gradient(90deg, var(--alice-blue), var(--uranian-blue));
-    border: 1px solid var(--polynesian-blue);
+    background: linear-gradient(45deg, var(--alice-blue), var(--uranian-blue));
     box-shadow: -25px 25px 2px 0px rgba(4, 76, 164, 0.05), -20px 20px 2px 0px rgba(4, 76, 164, 0.10), -15px 15px 2px 0px rgba(4, 76, 164, 0.20), -10px 10px 2px 0px rgba(4, 76, 164, 0.30), -5px 5px 2px 0px rgba(4, 76, 164, 0.40);
 }
 .favorite-heroes span {
@@ -468,8 +470,8 @@ form input {
 .bg-image_3,
 .bg-image_4,
 .bg-image_5 {
-    height: 160px;
-    width: 100%;
+    min-height: 160px;
+    margin-right: 1rem;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: right;
@@ -485,6 +487,8 @@ form input {
 }
 .categories div {
     padding: 3rem 0;
+    font-size: 1rem;
+    font-weight: 600;
     border-radius: 1rem;
     background-size: cover;
     background-position: center;
@@ -499,21 +503,26 @@ form input {
 
 .community {
     grid-area: b;
+    background-image: url(../images/customMap.jpg);
 }
 .analysis {
     grid-area: c;
 }
 .guides {
     grid-area: d;
+    background: url(../images/Ouch.webp);
 }
 .spotlight {
     grid-area: e;
+    background: url(../images/ObynGreenFootPortrait.webp);
 }
 .news {
     grid-area: f;
+    background: url(../images/Btd6-39no1.webp);
 }
 .events {
     grid-area: g;
+    background: url(../images/VortexPortrait.webp);
 }
 .misc {
     grid-area: h;
@@ -661,6 +670,9 @@ form input {
     .blog-image {
         height: 400px;
     }
+    .categories div {
+        font-size: 1.5rem;
+    }
 }
 @media (min-width: 768px) {    
     .introduction,
@@ -720,7 +732,7 @@ form input {
         flex-direction: column;
     }
     .blog-posts > * {
-        width: calc(50% - 2.6rem);
+        width: calc(50% - 0.6rem);
         max-height: initial;
     }
     .filter {

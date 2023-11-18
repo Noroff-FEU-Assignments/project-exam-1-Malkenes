@@ -253,8 +253,6 @@ async function displayBlog() {
     emailAddress.addEventListener("focusout", function() {
         if (!emailValidation(emailAddress.value) && emailAddress.value.trim().length > 0) {
             displayFormError(emailAddressError);
-        } else {
-            hideFormError(emailAddressError);
         }
     })
     emailAddress.addEventListener("focusin" , function() {
@@ -266,8 +264,6 @@ async function displayBlog() {
     name.addEventListener("focusout", function() {
         if(!stringValidation(name.value,5) && name.value.trim().length > 0) {
             displayFormError(nameError);
-        } else {
-            hideFormError(nameError);
         }
     })
     name.addEventListener("focusin", function() {
@@ -279,8 +275,6 @@ async function displayBlog() {
     message.addEventListener("focusout", function() {
         if(!stringValidation(message.value,25) && message.value.trim().length > 0) {
             displayFormError(messageError);
-        } else {
-            hideFormError(messageError);
         }
     })
     message.addEventListener("focusin", function() {
@@ -430,8 +424,6 @@ let newsLetterValidation = () => {
     email.addEventListener("focusout", function() {
         if (!emailValidation(email.value) && email.value.trim().length > 0) {
             displayFormError(emailError);
-        } else {
-            hideFormError(emailError);
         }
     })
     email.addEventListener("focusin" , function() {
@@ -452,8 +444,6 @@ if (contactForm) {
     name.addEventListener("focusout", function() {
         if(!stringValidation(name.value,5) && name.value.trim().length > 0) {
             displayFormError(nameError);
-        } else {
-            hideFormError(nameError);
         }
     })
     name.addEventListener("focusin", function() {
@@ -464,9 +454,7 @@ if (contactForm) {
     emailAddresse.addEventListener("focusout", function() {
         if(!emailValidation(emailAddresse.value) && emailAddresse.value.trim().length > 0) {
             displayFormError(emailAddresseError);
-        } else {
-            hideFormError(emailAddresseError);
-        }
+        } 
     })
     emailAddresse.addEventListener("focusin", function() {
         hideFormError(emailAddresseError);
@@ -476,8 +464,6 @@ if (contactForm) {
     subject.addEventListener("focusout", function() {
         if(!stringValidation(subject.value,15) && subject.value.trim().length > 0) {
             displayFormError(subjectError);
-        } else {
-            hideFormError(subjectError);
         }
     })
     subject.addEventListener("focusin", function() {
@@ -490,8 +476,6 @@ if (contactForm) {
     message.addEventListener("focusout", function() {
         if(!stringValidation(message.value,25) && message.value.trim().length > 0) {
             displayFormError(messageError);
-        } else {
-            hideFormError(messageError);
         }
     })
     message.addEventListener("focusin", function() {
