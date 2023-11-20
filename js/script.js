@@ -52,7 +52,7 @@ let createCarousel = (data) => {
             }
         }
         clearInterval(intervalId);
-        startInterval();
+        //startInterval();
     }
 
     let startInterval = () => {
@@ -65,46 +65,50 @@ let createCarousel = (data) => {
 }
 let createCarouselItem = (data , vertical=false) => {
     const imgUrl = data._embedded["wp:featuredmedia"]["0"].source_url;
-    const container = document.createElement("div");
+    const container = document.createElement("article");
     if (vertical === true) {
         container.classList.add("vertical");
     } else {
         container.classList.add("horizontal");
     }
-    container.classList.add("blog-post");
     container.innerHTML =`
-    <div class="bg-image" style="background-image: url(${imgUrl})"></div>
-    <div class="description">
-        <div class="title"><h3>${data.title.rendered}</h3></div>
-        ${data.excerpt.rendered}
-        <a href="/html/blog.html?id=${data.id}&title=${data.title.rendered}">Read More</a>
-    </div>`;
+    <a href="/html/blog.html?id=${data.id}&title=${data.title.rendered}" class="blog-post">
+        <div class="bg-image" style="background-image: url(${imgUrl})"></div>
+        <div class="description">
+            <div class="title"><h3>${data.title.rendered}</h3></div>
+            ${data.excerpt.rendered}
+        </div>
+    </a>`;
     return container;
 }
 let createPreviewItem = (data, id) => {
     const imgUrl = data._embedded["wp:featuredmedia"]["0"].source_url;
-    const container = document.createElement("div");
-    container.classList.add("blog-post");
+    const container = document.createElement("article");
+    container.classList.add("horizontal");
     container.setAttribute("data-id", id)
     container.innerHTML =`
-    <div class="bg-image-test" style="background-image: url(${imgUrl})"></div>
-    <div class="description">
-        <div class="title"><h3>${data.title.rendered}</h3></div>
-        ${data.excerpt.rendered}
+    <div>
+        <div class="bg-image" style="background-image: url(${imgUrl})"></div>
+        <div class="description">
+            <div class="title"><h3>${data.title.rendered}</h3></div>
+            ${data.excerpt.rendered}
+        </div>
     </div>`;
     return container;
 }
 let createListItem = (data) => {
     const imgUrl = data._embedded["wp:featuredmedia"]["0"].source_url;
-    const container = document.createElement("a");
-    container.href = `/html/blog.html?id=${data.id}&title=${data.title.rendered}`
+    const container = document.createElement("article");
+    //container.href = `/html/blog.html?id=${data.id}&title=${data.title.rendered}`
     container.classList.add("blog-post");
     container.innerHTML =`
-    <div class="bg-image" style="background-image: url(${imgUrl})"></div>
-    <div class="description">
-        <div class="title"><h3>${data.title.rendered}</h3></div>
-        ${data.excerpt.rendered}
-    </div>`;
+    <a href="/html/blog.html?id=${data.id}&title=${data.title.rendered}">
+        <div class="bg-image" style="background-image: url(${imgUrl})"></div>
+        <div class="description">
+            <div class="title"><h3>${data.title.rendered}</h3></div>
+            ${data.excerpt.rendered}
+        </div>
+    </a>`;
     return container;
 }
 const carousel = document.querySelector("#carousel-wrapper");
