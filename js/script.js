@@ -1,7 +1,5 @@
-import { buildQueryString } from "./modules/functions.js";
-import { timeElapsed } from "./modules/functions.js";
-import { getCategoryId } from "./modules/functions.js";
-import { getTotalPages, makeApiCall, postApiData } from "./modules/render.js";
+import { buildQueryString, timeElapsed, getCategoryId } from "./modules/functions.js";
+import { getTotalPages, makeApiCall, postApiData, showLoadingIndicator, hideLoadingIndicator } from "./modules/render.js";
 
 let toggleMenu = () => {
     const menu = document.querySelector(".menu");
@@ -23,57 +21,12 @@ const hamburger = document.querySelector(".hamburger");
 
 hamburger.addEventListener("click", toggleMenu);
 
-let createCarousel = (data) => {
-    let j = 0;
-    let intervalId = null;
-    const previous = document.querySelector(".previous");
-    const next = document.querySelector(".next");
-
-    let onPrevious = () => {
-        j = (j - 3) % data.length;
-        if (j < 0) {
-            j = 6;
-        }
-        displayCarousel();
-    }
-
-    let onNext = () => {
-        j = (j + 3) % data.length;
-        displayCarousel();
-    }
-
-    let displayCarousel = () => {
-        carousel.innerHTML = "";
-        for (let i = j ; i < j+3 ; i++) {
-            if (i%3 === 0) {
-                carousel.append(createCarouselItem(data[i]));
-            } else {
-                carousel.append(createCarouselItem(data[i], true));
-            }
-        }
-        clearInterval(intervalId);
-        //startInterval();
-    }
-
-    let startInterval = () => {
-        intervalId = setInterval(onNext,5000);
-    }
-
-    onNext();
-    previous.addEventListener("click", onPrevious)
-    next.addEventListener("click", onNext)
-}
-let createCarouselItem = (data , vertical=false) => {
+let createCarouselItem = (data) => {
     const imgUrl = data._embedded["wp:featuredmedia"]["0"].source_url;
     const container = document.createElement("article");
-    if (vertical === true) {
-        container.classList.add("vertical");
-    } else {
-        container.classList.add("horizontal");
-    }
     container.innerHTML =`
     <a href="/html/blog.html?id=${data.id}&title=${data.title.rendered}" class="blog-post">
-        <div class="bg-image" style="background-image: url(${imgUrl})"></div>
+        <span><div class="bg-image" style="background-image: url(${imgUrl})"></div></span>
         <div class="description">
             <div class="title"><h3>${data.title.rendered}</h3></div>
             ${data.excerpt.rendered}
@@ -84,7 +37,6 @@ let createCarouselItem = (data , vertical=false) => {
 let createPreviewItem = (data, id) => {
     const imgUrl = data._embedded["wp:featuredmedia"]["0"].source_url;
     const container = document.createElement("article");
-    container.classList.add("horizontal");
     container.setAttribute("data-id", id)
     container.innerHTML =`
     <div>
@@ -100,7 +52,7 @@ let createListItem = (data) => {
     const imgUrl = data._embedded["wp:featuredmedia"]["0"].source_url;
     const container = document.createElement("article");
     //container.href = `/html/blog.html?id=${data.id}&title=${data.title.rendered}`
-    container.classList.add("blog-post");
+    //container.classList.add("blog-post");
     container.innerHTML =`
     <a href="/html/blog.html?id=${data.id}&title=${data.title.rendered}">
         <div class="bg-image" style="background-image: url(${imgUrl})"></div>
@@ -111,15 +63,77 @@ let createListItem = (data) => {
     </a>`;
     return container;
 }
+let displayCarousel = (data) => {
+    for (let i = 0 ; i < 3 ; i++) {
+        carousel.children[0].append(createCarouselItem(data[i]));
+    }
+    for (let i = 3 ; i < 6 ; i++) {
+        carousel.children[1].append(createCarouselItem(data[i]));
+    }
+    for (let i = 6 ; i < 9 ; i++) {
+        carousel.children[2].append(createCarouselItem(data[i]));
+    }
+}
+var carouselID = null;
+let carouselNext = () => {
+    const cI = carousel.children;
+    var pos = 0;
+    clearInterval(carouselID);
+    carouselID = setInterval(frame, 100);
+    function frame() {
+        if (pos === 5) {
+            carousel.insertBefore(cI[0],cI[2].nextSibling);
+            clearInterval(carouselID);
+            //startInterval();
+        } else {
+            pos++;
+            cI[2].style.transform = `translate3d(${(pos*2.5) + "%"},0,${(-5 +(pos)) +"px"})`;
+            cI[1].style.transform = `translate3d(${(12.5 + pos*2.5) +"%"},0,${-pos + "px"})`;
+            cI[0].style.transform = `translate3d(${(25 -(5*pos)) +"%"},0,-5px)`;    
+        }
+    }
+}
+let carouselPrev = () => {
+    const cI = carousel.children;
+    var pos = 0;
+    clearInterval(carouselID);
+    carouselID = setInterval(frame, 100);
+    function frame() {
+        if (pos === 5) {
+            carousel.insertBefore(cI[2],cI[0]);
+            clearInterval(carouselID);
+            startInterval();
+        } else {
+            pos++;
+            cI[2].style.transform = `translate3d(${(pos*2.5) + "%"},0,${(-5 +(pos)) +"px"})`;
+            cI[1].style.transform = `translate3d(${(12.5 + pos*2.5) +"%"},0,${-pos + "px"})`;
+            cI[0].style.transform = `translate3d(${(25 -(5*pos)) +"%"},0,-5px)`;  
+        }
+    }
+}
+let startInterval = () => {
+    carouselID = setInterval(carouselNext,5000);
+}
+
 const carousel = document.querySelector("#carousel-wrapper");
 if (carousel) {
+    showLoadingIndicator(carousel);
     const newPosts = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?per_page=9&_embed");
-    createCarousel(newPosts);
+    hideLoadingIndicator();
+    displayCarousel(newPosts);
+    const next = document.querySelector(".next");
+    next.addEventListener("click", carouselNext);
+    document.querySelector(".previous").addEventListener("click", carouselPrev);
+    //carouselID = setInterval(carouselNext,5000);
+    //startInterval();
 }
+
 
 const favoriteHeroes = document.querySelector(".favorite-heroes");
 if (favoriteHeroes) {
+    showLoadingIndicator(favoriteHeroes);
     const data = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/posts?categories=4&_embed");
+    hideLoadingIndicator();
     for (let i = 1 ; i < 6 ; i++) {
         const image = document.querySelector(".bg-image_"+i);
         image.style.backgroundImage = `url(${data[i-1]._embedded["wp:featuredmedia"]["0"].source_url})`;
@@ -128,9 +142,10 @@ if (favoriteHeroes) {
     }
 }
 
-
 const preview = document.querySelector(".preview");
 if (preview) {
+    const explore = document.querySelector(".explore");
+    showLoadingIndicator(explore)
     const category = document.querySelector(".categories");
     for (let i = 0 ; i < category.children.length ; i++) {
         if (getCategoryId(category.children[i].classList[0]) > 0) {
@@ -138,6 +153,7 @@ if (preview) {
             preview.append(createPreviewItem(post[0],getCategoryId(category.children[i].classList[0])));
         }
     }
+    hideLoadingIndicator();
     let setActiveArticle = (e) => {
         const id = getCategoryId(e.target.classList[0]);
         if (id > 0) {
@@ -162,6 +178,7 @@ async function displayBlog() {
     const pageTitle = document.getElementById("page-title");
     pageTitle.textContent = "Beyond the Bloons | " + blogTitle;
     const url = "https://bloon.malke.no/wp-json/wp/v2/posts/" + blogId + "?_embed";
+    showLoadingIndicator(blogPage);
     const blogData = await makeApiCall(url);
     const date = new Date(blogData.date_gmt);
     blogPage.innerHTML = `
@@ -352,7 +369,10 @@ if (blogPage) {
 
 
 async function displayBlogList(url) {
+    const viewMore = document.querySelector(".view-more");
+    showLoadingIndicator(viewMore);
     let posts = await makeApiCall(url);
+    hideLoadingIndicator(viewMore);
     posts.forEach(el => {
         blogList.append(createListItem(el));
     })
@@ -364,7 +384,6 @@ async function displayBlogList(url) {
     const params = new URLSearchParams(url);
     const pageParam = params.get("page");
     const totalPages = await getTotalPages(url);
-    const viewMore = document.querySelector(".view-more");
     if (totalPages === pageParam || totalPages === "1") {
         viewMore.style.display = "none";
     } else {
@@ -387,7 +406,6 @@ if (blogList) {
             history.pushState(null,null, "/html/blogs.html");
         }
         url = baseUrl + buildQueryString(queryParams);
-        console.log(url);
     }
 
     let reload = (e) => {

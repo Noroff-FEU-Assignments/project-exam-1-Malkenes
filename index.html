@@ -41,13 +41,21 @@
         </nav>
     </header>
     <main>
-        <section class="hero">
-            <h1 class="hero-text">Where <span>Bloons</span> Meet Their Match</h1>
+        <section>
+            <h1 class="sr-only">beyond the bloon homepage</h1>
             <div class="carousel">
                 <h2>New Posts</h2>
-                <div id="carousel-wrapper"></div>
-                <button class="previous cta" value="previous"><i class="fas fa-arrow-left"></i></button>
-                <button class="next cta" value="next"><i class="fas fa-arrow-right"></i></button>
+                <div id="carousel-wrapper">
+                    <div class="carousel_main carousel_item"></div>
+                    <div class="carousel_prev carousel_item"></div>
+                    <div class="carousel_next carousel_item"></div>
+                    <div class="previous-container">
+                        <button class="previous cta" value="previous"><i class="fas fa-arrow-left"></i></button>
+                    </div>
+                    <div class="next-container">
+                        <button class="next cta" value="next"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
             </div>
         </section>
         <section class="introduction">
@@ -60,43 +68,48 @@
         <section>
             <h2>Favorite Heroes</h2>
             <div class="favorite-heroes">
-                <article class="blog-post horizontal">
+                <article id="benjamin">
                     <a href="" class="link_1">
                         <div class="bg-image_1"></div>
                         <div class="description">
-                            <h3><span>1</span>Benjamin</h3>
+                            <div class="rank">1</div>
+                            <h3>Benjamin</h3>
                         </div>
                     </a>
                 </article>
-                <article class="blog-post vertical" id="striker">
+                <article id="striker">
                     <a href="" class="link_2">
                         <div class="bg-image_2"></div>
                         <div class="description">
-                            <h3><span>2</span>Striker Jones</h3>
+                            <div class="rank">2</div>
+                            <h3>Striker Jones</h3>
                         </div>
                     </a>
                 </article>
-                <article class="blog-post vertical">
+                <article>
                     <a href="" class="link_3">
                         <div class="bg-image_3"></div>
                         <div class="description">
-                            <h3><span>3</span>Obyn Greenfot</h3>
+                            <div class="rank">3</div>
+                            <h3>Obyn Greenfot</h3>
                         </div>
                     </a>
                 </article>
-                <article class="blog-post vertical">
+                <article>
                     <a href="" class="link_4">
                         <div class="bg-image_4"></div>
                         <div class="description">
-                            <h3><span>4</span>Gwendolin</h3>
+                            <div class="rank">4</div>
+                            <h3>Gwendolin</h3>
                         </div>
                     </a>
                 </article>
-                <article class="blog-post vertical">
+                <article>
                     <a href="" class="link_5">
                         <div class="bg-image_5"></div>
                         <div class="description">
-                            <h3><span>5</span>Quincy</h3>
+                            <div class="rank">5</div>
+                            <h3>Quincy</h3>
                         </div>
                     </a>
                 </article>
@@ -118,9 +131,6 @@
                 <div class="preview"></div>
             </div>
         </section>
-        <div id="loading-indicator">
-            <div class="loader"></div>
-        </div>
     </main>
     <footer>
         <div class="footer">
