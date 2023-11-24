@@ -46,8 +46,8 @@ export let timeElapsed = (date) => {
     const years = currentDate.getFullYear() - postDate.getFullYear();
     const months = currentDate.getMonth() - postDate.getMonth();
     const days = Math.floor(timeElapsed / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
+    const hours = Math.floor(timeElapsed / (1000 * 60 * 60));
+    const minutes = Math.floor(timeElapsed / (1000 * 60));
     let timeElapsedString = "";
     switch (true) {
         case years > 1:

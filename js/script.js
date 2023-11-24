@@ -1,6 +1,8 @@
 import { buildQueryString, timeElapsed, getCategoryId } from "./modules/functions.js";
 import { getTotalPages, makeApiCall, postApiData, showLoadingIndicator, hideLoadingIndicator } from "./modules/render.js";
-
+/*
+Toggles the visibility of the menu 
+*/
 let toggleMenu = () => {
     const menu = document.querySelector(".menu");
     const hamburgerIcon = document.querySelector(".fa-bars");
@@ -61,6 +63,10 @@ let createListItem = (data) => {
     </a>`;
     return container;
 }
+/*
+Populates the carousel with data
+Param data: array of objects    
+*/
 let displayCarousel = (data) => {
     for (let i = 0 ; i < 3 ; i++) {
         carousel.children[0].append(createCarouselItem(data[i]));
@@ -73,6 +79,9 @@ let displayCarousel = (data) => {
     }
 }
 var carouselID = null;
+/*
+Moves the carousel to the next set of elements
+*/
 let carouselNext = () => {
     const cI = carousel.children;
     var pos = 0;
@@ -91,6 +100,9 @@ let carouselNext = () => {
         }
     }
 }
+/*
+Moves the carousel to the previous set of elements
+*/
 let carouselPrev = () => {
     const cI = carousel.children;
     var pos = 0;
@@ -263,6 +275,7 @@ async function displayBlog() {
     })
     const blogComments = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/comments?post=" + blogId);
     if (blogComments.length === 0) {
+        const comments = document.querySelector(".comments");
         comments.style.display = "grid";
         comments.innerHTML = `<strong class="no-comments">no comments yet</strong>`;
     } else {
@@ -289,13 +302,15 @@ async function displayBlog() {
                 let replyToComment = document.createElement("div");
                 replyToComment.id = "reply-to-comment";
                 replyToComment.dataset.id = btn.dataset.id;
-                let commentText = btn.previousElementSibling;
+                let commentText = btn.parentElement.parentElement;
                 let com_prime = commentText.cloneNode(true);
-                replyToComment.innerHTML = `<div class="reply-container"><p>Reply To</p><span id="close">  close</span></div>`;
+                replyToComment.innerHTML = `<h3>Reply To</h3>`;
                 replyToComment.append(com_prime);
                 postComment.insertBefore(replyToComment,postComment.firstChild);
                 document.querySelector(".comment-section").scrollIntoView( {behavior: "smooth" ,block: "start"});
-                const close = document.querySelector("#close");
+                const close = replyToComment.querySelector("span");
+                close.textContent = "close";
+                close.style.color = "red";
                 close.onclick = function() {
                     replyToComment.remove();
                 }
@@ -373,7 +388,9 @@ async function displayBlog() {
             postApiData("https://bloon.malke.no/wp-json/wp/v2/comments", {post: blogId, author_name: name.value, author_email: emailAddress.value, content: message.value, parent: parentId});
             postComment.reset()
             displayFormError(confirmation);
-            document.querySelector("#reply-to-comment").remove();
+            if (document.querySelector("#reply-to-comment")) {
+                document.querySelector("#reply-to-comment").remove();
+            }
         }
     })
 }
@@ -391,8 +408,10 @@ let displayComment = (comment) => {
             ${timeElapsed(comment.date)}
             ${comment.content.rendered}
         </div>
+        <div class="reply-box">
+            <span class="reply" data-id= ${comment.id}>reply</span>
+        </div>
     </div>
-    <button class="reply" data-id= ${comment.id}>reply</button>
     `;
     return singleComment;
 }

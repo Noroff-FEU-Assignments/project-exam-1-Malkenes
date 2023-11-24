@@ -178,9 +178,8 @@ a {
     border: solid 1rem;
     border-top: solid 1rem var(--polynesian-blue);
     border-radius: 50%;
-    /*width: 120px;*/
     height: 50%;
-    /*min-height: 20px;*/
+    max-height: 200px;
     aspect-ratio: 1/1;
     margin: auto;
     animation: spin 2s linear infinite;
@@ -252,7 +251,7 @@ form label {
 .contact-form {
     max-width: 500px;
     margin: auto;
-    border: solid var(--polynesian-blue);
+    border: solid 1px var(--polynesian-blue);
     box-shadow: -0.5rem 0.5rem 0.25rem rgba(0,0,0,0.25);
 }
 form input {
@@ -471,8 +470,10 @@ article > * {
 .facebook {
     background: #1877F2;
 }
-.comments > ul {
+.comments {
     margin-top: 1rem;
+}
+.comments > ul {
     padding: 0;
 }
 .comments li {
@@ -486,8 +487,18 @@ article > * {
     display: flex;
     justify-content: space-between;
 }
-.reply-container span {
+#reply-to-comment {
+    background: var(--uranian-blue);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+.reply-box {
+    flex: 1;
+    text-align: end;
+}
+.comment span {
     cursor: pointer;
+    padding-right: 1rem;
 }
 /* About */
 .offer {
@@ -831,6 +842,9 @@ article > * {
     }
     #carousel-wrapper a:hover > span .bg-image {
         clip-path: ellipse(100% 100% at 50% 50%);
+    }
+    .comment span:hover {
+        opacity: 0.8;
     }
 }
 
