@@ -25,7 +25,7 @@ let createCarouselItem = (data) => {
     const imgUrl = data._embedded["wp:featuredmedia"]["0"].source_url;
     const container = document.createElement("article");
     container.innerHTML =`
-    <a href="/html/blog.html?id=${data.id}&title=${data.title.rendered}" class="blog-post">
+    <a href="/html/blog.html?id=${data.id}&title=${data.title.rendered}">
         <span><div class="bg-image" style="background-image: url(${imgUrl})"></div></span>
         <div class="description">
             <div class="title"><h3>${data.title.rendered}</h3></div>
@@ -51,8 +51,6 @@ let createPreviewItem = (data, id) => {
 let createListItem = (data) => {
     const imgUrl = data._embedded["wp:featuredmedia"]["0"].source_url;
     const container = document.createElement("article");
-    //container.href = `/html/blog.html?id=${data.id}&title=${data.title.rendered}`
-    //container.classList.add("blog-post");
     container.innerHTML =`
     <a href="/html/blog.html?id=${data.id}&title=${data.title.rendered}">
         <div class="bg-image" style="background-image: url(${imgUrl})"></div>
@@ -84,7 +82,7 @@ let carouselNext = () => {
         if (pos === 5) {
             carousel.insertBefore(cI[0],cI[2].nextSibling);
             clearInterval(carouselID);
-            //startInterval();
+            startInterval();
         } else {
             pos++;
             cI[2].style.transform = `translate3d(${(pos*2.5) + "%"},0,${(-5 +(pos)) +"px"})`;
@@ -125,7 +123,7 @@ if (carousel) {
     next.addEventListener("click", carouselNext);
     document.querySelector(".previous").addEventListener("click", carouselPrev);
     //carouselID = setInterval(carouselNext,5000);
-    //startInterval();
+    startInterval();
 }
 
 
@@ -180,6 +178,7 @@ async function displayBlog() {
     const url = "https://bloon.malke.no/wp-json/wp/v2/posts/" + blogId + "?_embed";
     showLoadingIndicator(blogPage);
     const blogData = await makeApiCall(url);
+    hideLoadingIndicator();
     const date = new Date(blogData.date_gmt);
     blogPage.innerHTML = `
     <section class="blog-header">
@@ -210,6 +209,13 @@ async function displayBlog() {
         </div>
         <h2>Leave a reply</h2>
         <div class="comment-wrapper">
+            <div>
+                <h3>Commenting Guidelines</h3>
+                <ul>
+                    <li>Please provide your name and a valid email address when submitting a comment. This helps us maintain a genuine and accountable community.</li>
+                    <li>All comments undergo a moderation process before they appear on the website. This is to ensure that the discussions remain positive, relevant, and respectful. Your comment will be visible once it has been reviewed and approved by our moderation team.</li>
+                </ul>
+            </div>
             <form id="post-comment">
                 <div class="word-count">
                     <label for="comment">Comment</label>
@@ -226,8 +232,8 @@ async function displayBlog() {
                 <button class="cta">Submit</button>
                 <p class="confirmation" id="success">Comment has been recived and is up for review</p>
             </form>
-            <div class="comments"></div>
         </div>
+        <div class="comments"></div>
     </section>`;
     
     const imgElements = blogPage.querySelectorAll("img");
@@ -247,9 +253,7 @@ async function displayBlog() {
         }
     }
     const closeElement = document.querySelectorAll(".close-modal");
-    console.log(closeElement);
     closeElement.forEach(btn => {
-        console.log(btn);   
         btn.onclick = function(e) {
             for (let i = 0 ; i < imgElements.length ; i ++) {
                 var modal = document.querySelector(`#imageModal_${i}`);
@@ -257,17 +261,47 @@ async function displayBlog() {
             }    
         }
     })
-    const blogComments = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/comments?post=" +blogId);
-    const comments = document.querySelector(".comments");
+    const blogComments = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/comments?post=" + blogId);
     if (blogComments.length === 0) {
         comments.style.display = "grid";
-        comments.innerHTML = `<p class="no-comments">no comments yet</p>`;
+        comments.innerHTML = `<strong class="no-comments">no comments yet</strong>`;
+    } else {
+        commentsAndStuff(0);
     }
-    blogComments.forEach(comment => {
-        if (comment.parent === 0) {
-            comments.append(displayComment(comment));
-        }
-    })
+    async function commentsAndStuff(id) {
+        const comments = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/comments?post=" + blogId +"&parent=" + id);
+        const parentComment = document.querySelector("#comment-" + id) || document.querySelector(".comments");
+        const childComments = document.createElement("ul");
+        parentComment.append(childComments);
+        comments.forEach(comment => {
+            childComments.append(displayComment(comment));
+            if (comment._links.children) {
+                commentsAndStuff(comment.id);
+            }
+        })
+        const replyButtons = document.querySelectorAll(".reply");
+        replyButtons.forEach(btn => {
+            btn.onclick = function() {
+                if (postComment.querySelector("#reply-to-comment")) {
+                    let cumment = postComment.querySelector("#reply-to-comment");
+                    cumment.remove();
+                }
+                let replyToComment = document.createElement("div");
+                replyToComment.id = "reply-to-comment";
+                replyToComment.dataset.id = btn.dataset.id;
+                let commentText = btn.previousElementSibling;
+                let com_prime = commentText.cloneNode(true);
+                replyToComment.innerHTML = `<div class="reply-container"><p>Reply To</p><span id="close">  close</span></div>`;
+                replyToComment.append(com_prime);
+                postComment.insertBefore(replyToComment,postComment.firstChild);
+                document.querySelector(".comment-section").scrollIntoView( {behavior: "smooth" ,block: "start"});
+                const close = document.querySelector("#close");
+                close.onclick = function() {
+                    replyToComment.remove();
+                }
+            }
+        })    
+    }
     const postComment = document.querySelector("#post-comment");
     const emailAddress = document.querySelector("#email-address");
     const emailAddressError = document.querySelector("#email-address-error");
@@ -315,6 +349,10 @@ async function displayBlog() {
     const confirmation = document.querySelector("#success");
     postComment.addEventListener("submit" , (e) => {
         e.preventDefault();
+        let parentId = null;
+        if (document.querySelector("#reply-to-comment")) {
+            parentId = postComment.firstChild.dataset.id;
+        }
         var checklist = 0;
         if (stringValidation(name.value,5)) {
             checklist += 1;
@@ -332,26 +370,30 @@ async function displayBlog() {
             displayFormError(messageError);
         }
         if (checklist === 3) {
-            postApiData("https://bloon.malke.no/wp-json/wp/v2/comments", {post: blogId, author_name: name.value, author_email: emailAddress.value, content: message.value});
+            postApiData("https://bloon.malke.no/wp-json/wp/v2/comments", {post: blogId, author_name: name.value, author_email: emailAddress.value, content: message.value, parent: parentId});
             postComment.reset()
             displayFormError(confirmation);
+            document.querySelector("#reply-to-comment").remove();
         }
     })
 }
 
 let displayComment = (comment) => {
-    const singleComment = document.createElement("div");
+    const singleComment = document.createElement("li");
     singleComment.id = "comment-" + comment.id;
-    singleComment.classList.add("comment");
     singleComment.innerHTML = `
-    <div>
-        <img src= ${comment.author_avatar_urls[48]}>
+    <div class="comment">
+        <div>
+            <img src= ${comment.author_avatar_urls[48]}>
+        </div>
+        <div>
+            <strong>${comment.author_name}</strong>
+            ${timeElapsed(comment.date)}
+            ${comment.content.rendered}
+        </div>
     </div>
-    <div>
-        <strong>${comment.author_name}</strong>
-        ${timeElapsed(comment.date)}
-        ${comment.content.rendered}
-    </div>`;
+    <button class="reply" data-id= ${comment.id}>reply</button>
+    `;
     return singleComment;
 }
 let appendModal = (src, number) => {
@@ -565,5 +607,4 @@ let emailValidation = (email) => {
     const regEx = /\S+@\S+.\S+/;
     return regEx.test(email);
 }
-
 newsLetterValidation();

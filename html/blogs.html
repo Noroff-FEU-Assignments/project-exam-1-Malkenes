@@ -34,7 +34,7 @@
                 <li><a href="about.html">About</a></li>
                 <li><a href="blogs.html">Blog</a></li>
             </ul>
-            <button class="hamburger cta" value="menu">
+            <button class="hamburger cta" type="button" value="menu">
                 <i class="fa-solid fa-bars"></i>
                 <i class="fa-solid fa-x"></i>
             </button>
@@ -50,6 +50,7 @@
         <section class="blog-main">
             <div>
                 <fieldset class="filter">
+                    <legend class="sr-only">Choose category</legend>
                     <input type="radio" id="all-posts" name="filter" value="all-posts" checked>
                     <label for="all-posts">New Posts</label>
                     <input type="radio" id="guides" name="filter" value="guides">

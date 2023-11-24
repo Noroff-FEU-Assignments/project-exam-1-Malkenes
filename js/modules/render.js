@@ -24,7 +24,6 @@ export async function getTotalPages(url) {
     }
 }
 export async function postApiData(url , data={}) {
-    console.log(data);
     const response = await fetch(url, {
         method: "post",
         headers: {
@@ -45,7 +44,6 @@ export let showLoadingIndicator = (element) => {
     mainElement.append(loadingIndicator);
     
     const box = element.getBoundingClientRect();
-    console.log(box);
     loadingIndicator.style.top = box.top + window.scrollY + "px";
     loadingIndicator.style.left = box.left + "px";
     loadingIndicator.style.width = box.width + "px";

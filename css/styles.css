@@ -9,7 +9,7 @@ textarea {
 .no-comments {
     place-self: center;
 }
-body, form, header, .title, #loading-indicator, .menu, #post-comment, .page-header i, .introduction div {
+body, form, header, .title, #loading-indicator, .menu, #post-comment, .page-header i {
     background: var(--alice-blue);
 }
 .page-header, .blog-header, .preview, .comment-section, .background, .view-more, .battle-call, .mission-statement, .offers li, .blog-posts article:not(.background) .title, form label, .filter > * {
@@ -40,7 +40,7 @@ nav, .footer, #post-comment, .share, .share > *, form, .offers, .mission, .socia
 .footer, .socials, .comment, #carousel-wrapper, .share, .favorite-heroes, .categories, .filter, .explore, .menu, .offers, .blog-posts {
     gap: 1rem;
 }
-.cta, footer, .description, .newsletter, form, .contact-form, .filter, .comment-wrapper > *, .introduction div, .page-header, .page-header i, .introduction, .blog-header, .mission-statement, .offers li, .view-more {
+.cta, footer, .description, .newsletter, form, .contact-form, .filter, .comment-wrapper > *, .page-header, .page-header i, .introduction, .blog-header, .mission-statement, .offers li, .view-more {
     padding: 1rem;
 }
 header, .blog-image, .menu, .categories, .modal,#loading-indicator, .blog figure img,.mission img, .battle-call img {
@@ -56,7 +56,7 @@ nav, .footer, .cta, .page-header, #loading-indicator, .offers li, .socials {
     align-items: center;
 }
 main {
-    margin-top: 100px;
+    margin-top: 86px;
     min-height: 100vh;
 }
 h1, .cta {
@@ -285,12 +285,22 @@ form textarea, form input {
 
 .introduction {
     background-image: url(../images/BloonBackground.jpg);
+    background-color: rgba(235, 244, 254, 0.8);
+    background-blend-mode: overlay;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px var(--polynesian-blue);
 }
-.introduction a {
-    margin-top: 1rem;
-    text-wrap: nowrap;
+.introduction div {
+    max-width: 350px;
 }
-.categories div, #post-comment, .blog-image img, .offers li, .preview,.mission-statement, .introduction div {
+.introduction h2 {
+    margin: 0;
+}
+.categories div, #post-comment, .blog-image img, .offers li, .preview,.mission-statement, .introduction {
     border-radius: 1rem;
 }
 .favorite-heroes a {
@@ -340,6 +350,13 @@ form textarea, form input {
 }
 .blog-header, .comment-wrapper, .categories {
     display: grid;
+}
+.comment-wrapper li {
+    display: block;
+    margin: 1rem 0;
+}
+.comment-wrapper ul {
+    padding: 0;
 }
 .categories {
     grid-template-columns: repeat(3, 1fr);
@@ -454,8 +471,23 @@ article > * {
 .facebook {
     background: #1877F2;
 }
+.comments > ul {
+    margin-top: 1rem;
+    padding: 0;
+}
+.comments li {
+    display: block;
+}
 .comment {
     border-bottom: solid 1px var(--polynesian-blue);
+    margin-top: 1rem;
+}
+.reply-container {
+    display: flex;
+    justify-content: space-between;
+}
+.reply-container span {
+    cursor: pointer;
 }
 /* About */
 .offer {
@@ -600,7 +632,7 @@ article > * {
     }
 }
 @media (min-width: 768px) {    
-    .introduction, .blog-main {
+    .blog-main {
         display: flex;
     }
     section {
@@ -633,10 +665,6 @@ article > * {
     }
     .next {
         right: 0;
-    }
-    .introduction {
-        gap: 1rem;
-        align-items: center;
     }
     .favorite-heroes {
         display: grid;
@@ -681,7 +709,8 @@ article > * {
         grid-row: 1/3;
     }
     .comment-wrapper {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 2fr;
+        align-items: center;
     }
     .offers {
         flex-direction: row;
@@ -777,20 +806,15 @@ article > * {
     .preview .active {
         opacity: 1;
     }
-    .comment-wrapper {
-        grid-template-columns: 1fr 2fr;
-    }
 }
 @media (min-width: 1200px) {
     main, nav, .footer {
         max-width: 1200px;
         margin: auto;
     }
-    
     main {
-        margin-top: 100px;
+        margin-top: 86px;
     }
-    
 }
 @media (hover: hover) {
     .blog-posts a:hover, .view-more:hover, .filter > *:hover {
