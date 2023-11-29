@@ -588,24 +588,19 @@ article > * {
     position: absolute;
     transform: translate3d(25%,0,-5px);
 }
-.next-container, .previous-container {
+.cover {
     position: absolute;
     width: 7%;
     height: 100%;
+    width: 100%;
     background: #0000002b;
     transform: translate3d(0,0,-5px);
 }
-.next-container {
-    right: 0;
-}
-.previous-container {
-    left: 0;
-}
 .next {
-    left: 0;
+    right: 7%;
 }
 .previous {
-    right: 0;
+    left: 7%;
 }
 @media (min-width: 576px) {
     /* Header */
@@ -670,12 +665,6 @@ article > * {
         background-size: cover;
         background-repeat: no-repeat;
         background-position-x: center;
-    }
-    .previous {
-        left: 0;
-    }
-    .next {
-        right: 0;
     }
     .favorite-heroes {
         display: grid;
@@ -764,17 +753,6 @@ article > * {
         bottom: calc(100% - 1rem);
         right: 1rem;
         left: 1rem;
-    }
-    .next-container, .previous-container {
-        top: 0;
-        display: flex;
-        justify-content: center;
-    }
-    .next-container {
-        right: 0;
-    }
-    .previous-container {
-        left: 0;
     }
 }
 

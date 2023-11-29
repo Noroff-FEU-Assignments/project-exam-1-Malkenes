@@ -94,9 +94,9 @@ let carouselNext = () => {
             startInterval();
         } else {
             pos++;
-            cI[2].style.transform = `translate3d(${(pos*2.5) + "%"},0,${(-5 +(pos)) +"px"})`;
-            cI[1].style.transform = `translate3d(${(12.5 + pos*2.5) +"%"},0,${-pos + "px"})`;
-            cI[0].style.transform = `translate3d(${(25 -(5*pos)) +"%"},0,-5px)`;    
+            cI[1].style.transform = `translate3d(${(pos*2.5) + "%"},0,${(-5 +(pos)) +"px"})`;
+            cI[0].style.transform = `translate3d(${(12.5 + pos*2.5) +"%"},0,${-pos + "px"})`;
+            cI[2].style.transform = `translate3d(${(25 -(5*pos)) +"%"},0,-5px)`;    
         }
     }
 }
@@ -115,9 +115,9 @@ let carouselPrev = () => {
             startInterval();
         } else {
             pos++;
-            cI[2].style.transform = `translate3d(${(pos*2.5) + "%"},0,${(-5 +(pos)) +"px"})`;
-            cI[1].style.transform = `translate3d(${(12.5 + pos*2.5) +"%"},0,${-pos + "px"})`;
-            cI[0].style.transform = `translate3d(${(25 -(5*pos)) +"%"},0,-5px)`;  
+            cI[2].style.transform = `translate3d(${(25 - pos*2.5) + "%"},0,${(-5 +(pos)) +"px"})`;
+            cI[0].style.transform = `translate3d(${(12.5 - pos*2.5) +"%"},0,${-pos + "px"})`;
+            cI[1].style.transform = `translate3d(${(5*pos) +"%"},0,-5px)`;  
         }
     }
 }
