@@ -279,9 +279,9 @@ async function displayBlog() {
         comments.style.display = "grid";
         comments.innerHTML = `<strong class="no-comments">no comments yet</strong>`;
     } else {
-        commentsAndStuff(0);
+        getComments(0);
     }
-    async function commentsAndStuff(id) {
+    async function getComments(id) {
         const comments = await makeApiCall("https://bloon.malke.no/wp-json/wp/v2/comments?post=" + blogId +"&parent=" + id);
         const parentComment = document.querySelector("#comment-" + id) || document.querySelector(".comments");
         const childComments = document.createElement("ul");
@@ -289,7 +289,7 @@ async function displayBlog() {
         comments.forEach(comment => {
             childComments.append(displayComment(comment));
             if (comment._links.children) {
-                commentsAndStuff(comment.id);
+                getComments(comment.id);
             }
         })
         const replyButtons = document.querySelectorAll(".reply");

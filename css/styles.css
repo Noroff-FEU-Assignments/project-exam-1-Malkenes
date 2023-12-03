@@ -49,7 +49,7 @@ header, .blog-image, .menu, .categories, .modal,#loading-indicator, .blog figure
 .socials, .error-message, nav i, .page-header i,h1 {
     font-size: 2rem;
 }
-nav, .socials, .word-count, .page-header /*.description*/ {
+nav, .socials, .word-count, .page-header {
     justify-content: space-between;
 }
 nav, .footer, .cta, .page-header, #loading-indicator, .offers li, .socials {
@@ -70,7 +70,7 @@ h2, nav, .intro-text {
 section {
     padding: 2rem 1rem ;
 }
-.view-more, .filter > * {
+.view-more, .filter > *, .cta, .close-modal, .blog img, .categories div, .comment span {
     cursor: pointer;
 }
 .blog figure img {
@@ -78,7 +78,6 @@ section {
 }
 
 .cta {
-    cursor: pointer;
     border: solid 2px var(--alice-blue);
 }
 a.cta {
@@ -154,15 +153,11 @@ a {
     top: 1rem;
     right: 2rem;
     font-size: 4rem;
-    cursor: pointer;
 }
 .modal-image {
     margin: auto;
     width: 80%;
     background: white;
-}
-.blog img {
-    cursor: pointer;
 }
 .loading-indicator {
     position: absolute;
@@ -191,7 +186,6 @@ a {
     border: solid 8px red;
     margin: auto;
 }
-/* Header */
 header {
     position: fixed;
     top: 0;
@@ -207,7 +201,6 @@ nav li, .error-message, .footer div, .categories div, .intro-text, .filter > * {
 .logo, .offers img {
     width: 4rem;
 }
-
 .menu {
     position: fixed;
     justify-content: end;
@@ -226,8 +219,6 @@ nav li, .error-message, .footer div, .categories div, .intro-text, .filter > * {
 .page-header {
     box-shadow: 0 0.5rem 0.25rem rgba(0,0,0,0.25);
 }
-
-/* Footer */
 .footer div {
     max-width: 300px;
 }
@@ -279,9 +270,6 @@ form textarea, form input {
     animation: shake 500ms;
     animation-iteration-count: 2;
 }
-/* Index */
-
-
 .introduction {
     background-image: url(../images/BloonBackground.jpg);
     background-color: rgba(235, 244, 254, 0.8);
@@ -373,7 +361,6 @@ form textarea, form input {
     background-position: center;
     background-color: rgba(181, 213, 252, 0.80);
     background-blend-mode: overlay;
-    cursor: pointer;
 }
 .reviews {
     grid-area: a;
@@ -406,7 +393,6 @@ form textarea, form input {
 .misc {
     grid-area: h;
 }
-/* Blog-List */
 .filter, .share {
     flex-wrap: wrap;
 }
@@ -430,7 +416,6 @@ article > * {
     margin-top: 1rem;
     text-align: center;
 }
-/* Blog */
 .blog-header {
     justify-items: center;
 }
@@ -497,10 +482,8 @@ article > * {
     text-align: end;
 }
 .comment span {
-    cursor: pointer;
     padding-right: 1rem;
 }
-/* About */
 .offer {
     background: #0668E0;
 }
@@ -603,7 +586,6 @@ article > * {
     left: 7%;
 }
 @media (min-width: 576px) {
-    /* Header */
     nav {
         padding: 0.5rem 2rem;
     }
@@ -620,8 +602,6 @@ article > * {
     .hamburger {
         display: none;
     }
-
-    /* Index */
     .carousel_item article:not(:first-child) a {
         grid-template-columns: 1fr 1fr;
     }
@@ -647,7 +627,6 @@ article > * {
     .page-header {
         width: 400px;
     }
-    /* Index */
     #carousel-wrapper > .carousel_item {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
@@ -675,8 +654,6 @@ article > * {
         grid-column: 1;
         grid-row: 3;
     }
-
-    /* Blog-List */
     .blog-main {
         flex-direction: row-reverse;
     }
@@ -693,7 +670,6 @@ article > * {
         position: sticky;
         top: 7rem;
     }
-    /* Blog */
     .blog-header {
         grid-template-columns: 1fr 2fr;
         gap: 1rem;
@@ -762,12 +738,10 @@ article > * {
         height: 80vh;
         width: unset;
     }
-    /* Footer */
     .footer {
         flex-direction: row;
         justify-content: space-between;
     }
-    /* Index */
     .categories {
         min-width: 500px;
         flex: 1;
